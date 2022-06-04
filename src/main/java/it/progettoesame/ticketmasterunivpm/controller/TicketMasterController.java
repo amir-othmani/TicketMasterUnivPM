@@ -1,7 +1,7 @@
 package it.progettoesame.ticketmasterunivpm.controller;
 
-import it.progettoesame.ticketmasterunivpm.parser.EventParser;
 import it.progettoesame.ticketmasterunivpm.service.TicketMasterService;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,10 +14,9 @@ import java.io.IOException;
 public class TicketMasterController {
 
     TicketMasterService ticketMasterService = new TicketMasterService();
-    EventParser eventParser = new EventParser();
 
     public TicketMasterController() throws IOException {
-        eventParser.JSONtoObject(ticketMasterService);
+        ticketMasterService.JSONtoObject();
     }
 
     @RequestMapping("/refresh")
@@ -27,6 +26,6 @@ public class TicketMasterController {
 
     @RequestMapping("/events")
     public ResponseEntity<Object> getRawEvents() {
-        return new ResponseEntity<>(ticketMasterService.getNotFilteredEvents(eventParser), HttpStatus.OK);
+        return new ResponseEntity<>(ticketMasterService.getNotFilteredEvents(), HttpStatus.OK);
     }
 }

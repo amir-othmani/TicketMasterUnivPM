@@ -1,14 +1,9 @@
 package it.progettoesame.ticketmasterunivpm.parser;
 
 import it.progettoesame.ticketmasterunivpm.model.Event;
-import it.progettoesame.ticketmasterunivpm.service.TicketMasterService;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
-import java.io.FileReader;
-import java.io.IOException;
+import org.json.simple.JSONArray;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
@@ -43,24 +38,6 @@ public class EventParser {
                 }
             }
             events.add(new Event(name, type));
-
-        }
-
-    }
-
-    public void JSONtoObject(TicketMasterService s) throws IOException {
-
-        try {
-            JSONParser parser = new JSONParser();
-            Object obj = null;
-            obj = parser.parse(new FileReader(s.getResponse()));
-            JSONObject tmp = (JSONObject) obj;
-            JSONObject jsonObject = (JSONObject) tmp.get("_embedded");
-            JSONArray jsonArray = (JSONArray) jsonObject.get("events");
-            keyValueParse(jsonArray);
-        }
-        catch ( ParseException e ) {
-            e.printStackTrace();
         }
     }
 }
