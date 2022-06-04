@@ -17,6 +17,6 @@ public class Event {
     }
 
     public String toString() {
-        return "Event: name=" + getName();
+        return "name: " + getName();
     }
 }
