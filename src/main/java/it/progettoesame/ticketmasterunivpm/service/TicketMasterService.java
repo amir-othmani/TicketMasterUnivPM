@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class TicketMasterService {
 
-    private final String url = "https://app.ticketmaster.com/discovery/v2/events.json?apikey=ytOGRTWK4lKDd4B9gvj8odbPaejuGh8V";
+    private final String url = "https://app.ticketmaster.com/discovery/v2/events.json?size=1&apikey=ytOGRTWK4lKDd4B9gvj8odbPaejuGh8V";
 
     private File response = new File("./resources/response.json");
 
