@@ -1,13 +1,9 @@
 package it.progettoesame.ticketmasterunivpm.service;
 
-import it.progettoesame.ticketmasterunivpm.model.Event;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import java.io.*;
 import java.net.URL;
-import java.util.ArrayList;
 
 public class TicketMasterService {
 
@@ -15,9 +11,7 @@ public class TicketMasterService {
 
     private File response = new File("./resources/response.json");
 
-    ArrayList<Event> events = new ArrayList<>();
-
-    public String getJSONfromURL() throws IOException {
+    public String getJSONfromURL() {
         try {
             InputStream input = new URL(url).openStream();
             JSONParser parser = new JSONParser();
@@ -33,32 +27,8 @@ public class TicketMasterService {
         return "Local data refreshed successfully.";
     }
 
-    public void JSONtoObject() throws IOException {
-        /*
-        PARTE IN MANUTENZIONE:
+    public void JSONtoObject()  {
 
-        try {
-            JSONParser parser = new JSONParser();
-            Object obj = parser.parse(new FileReader(response));
-            JSONObject jsonObj = (JSONObject) obj;
-            JSONArray jsonArr = (JSONArray) jsonObj.get("data");
-            events.clear();
-
-            for (int i = 0; i < jsonArr.size(); i++) {
-                JSONObject temp = (JSONObject) jsonArr.get(i);
-                String name = (String) temp.get("name");
-                if (temp.get("name") == null) {
-                    events.add(new Event(name));
-                } else {
-                    break;
-                }
-            }
-        }
-        catch ( FileNotFoundException | ParseException e ) {
-            throw new IOException();
-        }
-
-
-         */
+        System.out.println("\n\nMETODO IN MANUTENZIONE\n");
     }
 }
