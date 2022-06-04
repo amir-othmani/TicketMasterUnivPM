@@ -25,6 +25,29 @@ public class EventParser {
         this.events = events;
     }
 
+    public void keyValueParse(JSONArray jsonArr) {
+        Iterator<Map.Entry> itr1 = null;
+        Iterator itr2 = jsonArr.iterator();
+        while (itr2.hasNext())
+        {
+            itr1 = ((Map) itr2.next()).entrySet().iterator();
+            String name = null;
+            String type = null;
+            while (itr1.hasNext()) {
+                Map.Entry pair = itr1.next();
+                if(pair.getKey().toString().equals("name")){
+                    name = pair.getValue().toString();
+                }
+                if(pair.getKey().toString().equals("type")){
+                    type = pair.getValue().toString();
+                }
+            }
+            events.add(new Event(name, type));
+
+        }
+
+    }
+
     public void JSONtoObject(TicketMasterService s) throws IOException {
 
         try {
@@ -32,24 +55,11 @@ public class EventParser {
             Object obj = null;
             obj = parser.parse(new FileReader(s.getResponse()));
             JSONObject tmp = (JSONObject) obj;
-            JSONObject jsonObj = (JSONObject) tmp.get("_embedded");
-            JSONArray jsonArr = (JSONArray) jsonObj.get("events");
-
-            Iterator<Map.Entry> itr1 = null;
-            Iterator itr2 = jsonArr.iterator();
-
-            while (itr2.hasNext())
-            {
-                itr1 = ((Map) itr2.next()).entrySet().iterator();
-                while (itr1.hasNext()) {
-                    Map.Entry pair = itr1.next();
-                    if(pair.getKey().toString().equals("name")){
-                        events.add(new Event(pair.getValue().toString()));
-                    }
-                }
-            }
-
-        } catch ( ParseException e ) {
+            JSONObject jsonObject = (JSONObject) tmp.get("_embedded");
+            JSONArray jsonArray = (JSONArray) jsonObject.get("events");
+            keyValueParse(jsonArray);
+        }
+        catch ( ParseException e ) {
             e.printStackTrace();
         }
     }

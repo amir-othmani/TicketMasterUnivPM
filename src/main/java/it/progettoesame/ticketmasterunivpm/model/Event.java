@@ -1,8 +1,16 @@
 package it.progettoesame.ticketmasterunivpm.model;
 
+import java.util.ArrayList;
+
 public class Event {
 
     private String name;
+    private String type;
+
+    public Event(String name, String segment) {
+        this.name = name;
+        this.type = segment;
+    }
 
     public String getName() {
         return name;
@@ -12,11 +20,18 @@ public class Event {
         this.name = name;
     }
 
-    public Event(String name) {
-        this.name = name;
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String segment) {
+        this.type = segment;
     }
 
     public String toString() {
-        return "name: " + getName();
+        String message =
+                "Name: " + name + "\n" +
+                "Type:" + type + "\n\n";
+        return message;
     }
 }
