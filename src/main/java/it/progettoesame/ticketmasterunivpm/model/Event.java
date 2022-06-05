@@ -1,7 +1,7 @@
 package it.progettoesame.ticketmasterunivpm.model;
 
 
-//Il model
+//Il model che contiene tutti gli attributi dell'evento
 public class Event {
 
     private String name;
@@ -132,6 +132,5 @@ public class Event {
                 "SubGenre: " + subGenre + "\n\n";
         return message;
     }
-
      */
 }

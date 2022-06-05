@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
+
 //Il controller gestisce le chiamate
 @RestController
 public class TicketMasterController {
@@ -16,17 +17,8 @@ public class TicketMasterController {
     private TicketMasterService ticketMasterService = new TicketMasterService();
 
     public TicketMasterController() throws IOException {
-        ticketMasterService.getJSONfromURL();
-        ticketMasterService.getEventsFromFile();
+        ticketMasterService.getEventsFromURL();
     }
-
-    //Spero non mi debba servire in futuro questa rotta
-    /*
-    @RequestMapping("/refresh")
-    public ResponseEntity<Object> getNewData() throws IOException {
-        return new ResponseEntity<>(ticketMasterService.getJSONfromURL(), HttpStatus.OK);
-    }
-     */
 
     //Rotta che restituisce gli eventi non filtrati
     @RequestMapping("/events")
