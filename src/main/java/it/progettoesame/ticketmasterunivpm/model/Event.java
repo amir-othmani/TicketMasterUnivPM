@@ -1,15 +1,28 @@
 package it.progettoesame.ticketmasterunivpm.model;
 
+
 import java.util.ArrayList;
 
 public class Event {
 
     private String name;
-    private String type;
+    private String id;
+    private String url;
 
-    public Event(String name, String segment) {
+
+
+    public Event(String name, String id, String url) {
         this.name = name;
-        this.type = segment;
+        this.id = id;
+        this.url = url;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getName() {
@@ -20,18 +33,19 @@ public class Event {
         this.name = name;
     }
 
-    public String getType() {
-        return type;
+    public String getId() {
+        return id;
     }
 
-    public void setType(String segment) {
-        this.type = segment;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String toString() {
         String message =
                 "Name: " + name + "\n" +
-                "Type:" + type + "\n\n";
+                "Id: " + id + "\n" +
+                "Url: " + url + "\n\n";
         return message;
     }
 }

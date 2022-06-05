@@ -36,7 +36,8 @@ public class TicketMasterService {
             FileWriter fileOut = new FileWriter(response);
             fileOut.write(result.toString());
             fileOut.close();
-        } catch ( Exception e ) {
+        }
+        catch ( Exception e ) {
             e.printStackTrace();
             return "Failed to retrieve data from URL";
         }
@@ -51,8 +52,9 @@ public class TicketMasterService {
             JSONObject tmp = (JSONObject) obj;
             JSONObject jsonObject = (JSONObject) tmp.get("_embedded");
             JSONArray jsonArray = (JSONArray) jsonObject.get("events");
-            p.keyValueParse(jsonArray);
-        } catch ( ParseException e ) {
+            p.arrayParse(jsonArray);
+        }
+        catch ( ParseException e ) {
             e.printStackTrace();
         }
     }
