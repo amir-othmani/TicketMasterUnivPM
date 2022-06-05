@@ -7,16 +7,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
 
 
 //Il controller gestisce le chiamate
 @RestController
 public class TicketMasterController {
 
-    private TicketMasterService ticketMasterService = new TicketMasterService();
+    final private TicketMasterService ticketMasterService = new TicketMasterService();
 
-    public TicketMasterController() throws IOException {
+    public TicketMasterController() {
         ticketMasterService.getEventsFromURL();
     }
 

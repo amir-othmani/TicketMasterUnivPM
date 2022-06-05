@@ -52,9 +52,8 @@ public class EventParser {
         JSONObject jO= (JSONObject) o;
         JSONObject embedded1 = (JSONObject) jO.get("_embedded");
         JSONArray eventsArr = (JSONArray) embedded1.get("events");
-        for (int i = 0; i < eventsArr.size(); i++)
-        {
-            JSONObject eventoTemp = (JSONObject) eventsArr.get(i);
+        for (Object value : eventsArr) {
+            JSONObject eventoTemp = (JSONObject) value;
             events.add(parseEvent(eventoTemp));
         }
     }
