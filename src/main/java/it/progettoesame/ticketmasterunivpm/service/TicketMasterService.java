@@ -14,9 +14,9 @@ import java.util.ArrayList;
 
 public class TicketMasterService {
 
-    private String url = "https://app.ticketmaster.com/discovery/v2/events.json?size=1&apikey=ytOGRTWK4lKDd4B9gvj8odbPaejuGh8V";
+    private String url = "https://app.ticketmaster.com/discovery/v2/events.json?size=2&apikey=ytOGRTWK4lKDd4B9gvj8odbPaejuGh8V";
     private File response = new File("./resources/response.json");
-    private EventParser p = null;
+    private EventParser p = new EventParser();
 
     public File getResponse() {
         return response;
@@ -26,7 +26,8 @@ public class TicketMasterService {
         this.response = response;
     }
 
-    public String getJSONfromURL() throws IOException {
+    //Metodo che converte in un file locale di tipo json il risultato della chiamata API
+    public String getJSONfromURL() {
         try {
             InputStream input = new URL(url).openStream();
             JSONParser parser = new JSONParser();
@@ -42,13 +43,13 @@ public class TicketMasterService {
         return "Local data refreshed successfully.";
     }
 
+    //Metodo che estrae gli eventi seguendo la struttura imposta dal model
     public void getEventsFromFile() throws IOException {
         try {
-            p = new EventParser();
             JSONParser parser = new JSONParser();
             Object obj = null;
             obj = parser.parse(new FileReader(response));
-            p.parseEvents(obj);
+            p.parseEventsArray(obj);
         }
         catch ( ParseException e ) {
             e.printStackTrace();

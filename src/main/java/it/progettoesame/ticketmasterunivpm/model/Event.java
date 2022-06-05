@@ -1,6 +1,7 @@
 package it.progettoesame.ticketmasterunivpm.model;
 
 
+//Il model
 public class Event {
 
     private String name;
@@ -117,6 +118,7 @@ public class Event {
         this.subgenre = subgenre;
     }
 
+    //MATERIALE DA NON TOCCARE
     /*
     public String toString() {
         String message =

@@ -19,38 +19,43 @@ public class EventParser {
         this.events = events;
     }
 
-    public void parseEvents(Object o) {
+    //Metodo che costruisce il singolo evento
+    public Event parseEvent(JSONObject jsonObject) {
+        String name = (String) jsonObject.get("name");
+        String id = (String) jsonObject.get("id");
+        String url = (String) jsonObject.get("url");
+        JSONObject dates = (JSONObject) jsonObject.get("dates");
+            JSONObject start = (JSONObject) dates.get("start");
+                String localDate = (String) start.get("localDate");
+                String localTime = (String) start.get("localTime");
+        JSONArray classifications = (JSONArray) jsonObject.get("classifications");
+        JSONObject classificationsTemp = (JSONObject) classifications.get(0);
+            JSONObject segment = (JSONObject) classificationsTemp.get("segment");
+                String segmentName = (String) segment.get("name");
+            JSONObject genre = (JSONObject) classificationsTemp.get("genre");
+                String genreName = (String) genre.get("name");
+            JSONObject subGenre = (JSONObject) classificationsTemp.get("subGenre");
+                String subGenreName = (String) subGenre.get("name");
+        JSONObject embedded2 = (JSONObject) jsonObject.get("_embedded");
+            JSONArray venues = (JSONArray) embedded2.get("venues");
+            JSONObject venue = (JSONObject) venues.get(0);
+                String venueName = (String) venue.get("name");
+                JSONObject city = (JSONObject) venue.get("city");
+                    String cityName = (String) city.get("name");
+                JSONObject country = (JSONObject) venue.get("country");
+                    String countryName = (String) country.get("name");
+        return new Event(name, id, url, countryName, cityName, venueName, localDate, localTime, segmentName, genreName, subGenreName);
+    }
+
+    //Metodo che raggruppa gli eventi
+    public void parseEventsArray(Object o) {
         JSONObject jO= (JSONObject) o;
         JSONObject embedded1 = (JSONObject) jO.get("_embedded");
         JSONArray eventsArr = (JSONArray) embedded1.get("events");
-
         for (int i = 0; i < eventsArr.size(); i++)
         {
             JSONObject eventoTemp = (JSONObject) eventsArr.get(i);
-                String name = (String) eventoTemp.get("name");
-                String id = (String) eventoTemp.get("id");
-                String url = (String) eventoTemp.get("url");
-                JSONObject dates = (JSONObject) eventoTemp.get("dates");
-                    JSONObject start = (JSONObject) dates.get("start");
-                        String localDate = (String) start.get("localDate");
-                        String localTime = (String) start.get("localTime");
-                JSONArray classifications = (JSONArray) eventoTemp.get("classifications");
-                JSONObject classificationsTemp = (JSONObject) classifications.get(0);
-                    JSONObject segment = (JSONObject) classificationsTemp.get("segment");
-                        String segmentName = (String) segment.get("name");
-                    JSONObject genre = (JSONObject) classificationsTemp.get("genre");
-                        String genreName = (String) genre.get("name");
-                    JSONObject subGenre = (JSONObject) classificationsTemp.get("subGenre");
-                        String subGenreName = (String) subGenre.get("name");
-                JSONObject embedded2 = (JSONObject) eventoTemp.get("_embedded");
-                    JSONArray venues = (JSONArray) embedded2.get("venues");
-                    JSONObject venue = (JSONObject) venues.get(0);
-                        String venueName = (String) venue.get("name");
-                        JSONObject city = (JSONObject) venue.get("city");
-                            String cityName = (String) city.get("name");
-                        JSONObject country = (JSONObject) venue.get("country");
-                            String countryName = (String) city.get("name");
-            events.add(new Event(name, id, url, countryName, cityName, venueName, localDate, localTime, segmentName, genreName, subGenreName));
+            events.add(parseEvent(eventoTemp));
         }
     }
 }
