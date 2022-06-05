@@ -13,12 +13,12 @@ import java.util.ArrayList;
 
 public class TicketMasterService {
 
-    private String url = "https://app.ticketmaster.com/discovery/v2/events.json?size=1&apikey=ytOGRTWK4lKDd4B9gvj8odbPaejuGh8V";
+    private String url = "https://app.ticketmaster.com/discovery/v2/events.json?size=5&apikey=ytOGRTWK4lKDd4B9gvj8odbPaejuGh8V";
     private EventParser p = new EventParser();
     private JSONObject result = null;
 
     //Metodo che ricava gli eventi dalla chiamata API
-    public String getEventsFromURL() {
+    public void getEventsFromURL() {
         try {
             InputStream input = new URL(url).openStream();
             JSONParser parser = new JSONParser();
@@ -27,9 +27,7 @@ public class TicketMasterService {
         }
         catch ( Exception e ) {
             e.printStackTrace();
-            return "Failed to retrieve data from URL";
         }
-        return "Local data refreshed successfully.";
     }
 
     public ArrayList<Event> getNotFilteredEvents (){
