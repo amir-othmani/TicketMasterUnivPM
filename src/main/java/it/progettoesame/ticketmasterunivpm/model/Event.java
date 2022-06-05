@@ -6,21 +6,27 @@ public class Event {
     private String name;
     private String id;
     private String url;
-    private String localDate;
-    private String localTime;
+    private String country;
+    private String city;
+    private String venue;
+    private String localdate;
+    private String localtime;
     private String segment;
     private String genre;
-    private String subGenre;
+    private String subgenre;
 
-    public Event(String name, String id, String url, String localDate, String localTime, String segment, String genre, String subGenre) {
+    public Event(String name, String id, String url, String country, String city, String venue, String localdate, String localtime, String segment, String genre, String subgenre) {
         this.name = name;
         this.id = id;
         this.url = url;
-        this.localDate = localDate;
-        this.localTime = localTime;
+        this.country = country;
+        this.city = city;
+        this.venue = venue;
+        this.localdate = localdate;
+        this.localtime = localtime;
         this.segment = segment;
         this.genre = genre;
-        this.subGenre = subGenre;
+        this.subgenre = subgenre;
     }
 
     public String getName() {
@@ -47,20 +53,44 @@ public class Event {
         this.url = url;
     }
 
-    public String getLocalDate() {
-        return localDate;
+    public String getCountry() {
+        return country;
     }
 
-    public void setLocalDate(String localDate) {
-        this.localDate = localDate;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
-    public String getLocalTime() {
-        return localTime;
+    public String getCity() {
+        return city;
     }
 
-    public void setLocalTime(String localTime) {
-        this.localTime = localTime;
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getVenue() {
+        return venue;
+    }
+
+    public void setVenue(String venue) {
+        this.venue = venue;
+    }
+
+    public String getLocaldate() {
+        return localdate;
+    }
+
+    public void setLocaldate(String localdate) {
+        this.localdate = localdate;
+    }
+
+    public String getLocaltime() {
+        return localtime;
+    }
+
+    public void setLocaltime(String localtime) {
+        this.localtime = localtime;
     }
 
     public String getSegment() {
@@ -79,14 +109,15 @@ public class Event {
         this.genre = genre;
     }
 
-    public String getSubGenre() {
-        return subGenre;
+    public String getSubgenre() {
+        return subgenre;
     }
 
-    public void setSubGenre(String subGenre) {
-        this.subGenre = subGenre;
+    public void setSubgenre(String subgenre) {
+        this.subgenre = subgenre;
     }
 
+    /*
     public String toString() {
         String message =
                 "Name: " + name + "\n" +
@@ -99,4 +130,6 @@ public class Event {
                 "SubGenre: " + subGenre + "\n\n";
         return message;
     }
+
+     */
 }

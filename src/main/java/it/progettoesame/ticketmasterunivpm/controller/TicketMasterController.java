@@ -13,10 +13,10 @@ import java.io.IOException;
 @RestController
 public class TicketMasterController {
 
-    TicketMasterService ticketMasterService = new TicketMasterService();
+    private TicketMasterService ticketMasterService = null;
 
-    public TicketMasterController() throws IOException {
-        ticketMasterService.getEventsFromFile();
+    public TicketMasterController() {
+        ticketMasterService = new TicketMasterService();
     }
 
     @RequestMapping("/refresh")
@@ -25,7 +25,8 @@ public class TicketMasterController {
     }
 
     @RequestMapping("/events")
-    public ResponseEntity<Object> getRawEvents() {
+    public ResponseEntity<Object> getRawEvents() throws IOException {
+        ticketMasterService.getEventsFromFile();
         return new ResponseEntity<>(ticketMasterService.getNotFilteredEvents(), HttpStatus.OK);
     }
 }
