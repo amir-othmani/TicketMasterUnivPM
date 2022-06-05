@@ -1,10 +1,8 @@
 package it.progettoesame.ticketmasterunivpm.service;
 
-
 import it.progettoesame.ticketmasterunivpm.model.Event;
 import it.progettoesame.ticketmasterunivpm.parser.EventParser;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -16,9 +14,9 @@ import java.util.ArrayList;
 
 public class TicketMasterService {
 
-    String url = "https://app.ticketmaster.com/discovery/v2/events.json?size=2&apikey=ytOGRTWK4lKDd4B9gvj8odbPaejuGh8V";
+    private String url = "https://app.ticketmaster.com/discovery/v2/events.json?size=2&apikey=ytOGRTWK4lKDd4B9gvj8odbPaejuGh8V";
     private File response = new File("./resources/response.json");
-    EventParser p = new EventParser();
+    private EventParser p = new EventParser();
 
     public File getResponse() {
         return response;
@@ -44,15 +42,12 @@ public class TicketMasterService {
         return "Local data refreshed successfully.";
     }
 
-    public void JSONtoObject() throws IOException {
+    public void getEventsFromFile() throws IOException {
         try {
             JSONParser parser = new JSONParser();
             Object obj = null;
             obj = parser.parse(new FileReader(response));
-            JSONObject tmp = (JSONObject) obj;
-            JSONObject jsonObject = (JSONObject) tmp.get("_embedded");
-            JSONArray jsonArray = (JSONArray) jsonObject.get("events");
-            p.arrayParse(jsonArray);
+            p.parseEvents(obj);
         }
         catch ( ParseException e ) {
             e.printStackTrace();

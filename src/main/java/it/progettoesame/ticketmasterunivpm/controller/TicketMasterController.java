@@ -16,7 +16,7 @@ public class TicketMasterController {
     TicketMasterService ticketMasterService = new TicketMasterService();
 
     public TicketMasterController() throws IOException {
-        ticketMasterService.JSONtoObject();
+        ticketMasterService.getEventsFromFile();
     }
 
     @RequestMapping("/refresh")
