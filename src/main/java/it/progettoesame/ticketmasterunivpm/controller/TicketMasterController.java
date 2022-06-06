@@ -21,7 +21,7 @@ public class TicketMasterController {
 
     //Rotta che restituisce gli eventi non filtrati
     @RequestMapping("/events")
-    public ResponseEntity<Object> getRawEvents(@RequestParam Map<String, String> requestParam) {
+    public ResponseEntity<Object> getNotFilteredEvents(@RequestParam Map<String, String> requestParam) {
         String urlApi = ticketMasterService.getUrl(requestParam);
         return new ResponseEntity<>(ticketMasterService.getEventsFromURL(urlApi), HttpStatus.OK);
     }

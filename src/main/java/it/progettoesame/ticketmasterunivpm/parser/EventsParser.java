@@ -11,17 +11,6 @@ public class EventsParser {
 
     private ArrayList<Event> events = new ArrayList<>();
 
-    /*
-    public ArrayList<Event> getEvents() {
-        return events;
-    }
-
-    public void setEvents(ArrayList<Event> events) {
-        this.events = events;
-    }
-
-     */
-
     //Metodo che costruisce il singolo evento
     public Event parseEvent(JSONObject jsonObject) {
         String name = (String) jsonObject.get("name");

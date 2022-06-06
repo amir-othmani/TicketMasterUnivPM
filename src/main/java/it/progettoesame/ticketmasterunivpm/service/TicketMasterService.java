@@ -19,11 +19,14 @@ public class TicketMasterService {
     final private String urlBase = "https://app.ticketmaster.com/discovery/v2/events.json?";
     final private String apiKey = "apikey=ytOGRTWK4lKDd4B9gvj8odbPaejuGh8V";
 
+    //Metodo che ricava l'url attraverso i parametri inseriti dall'utente
     public String getUrl(Map<String, String> rP) {
+        String urlTemp = urlBase;
         if (rP.containsKey("countryCode"))
-            return urlBase + "countryCode=" + rP.get("countryCode") + "&" + apiKey;
-        else
-            return urlBase + "countryCode=DE&" + apiKey;
+            urlTemp += "countryCode=" + rP.getOrDefault("countryCode", "DE") + "&";
+        if (rP.containsKey("size"))
+            urlTemp += "size=" + rP.get("size") + "&";
+        return urlTemp + apiKey;
     }
 
     //Metodo che ricava gli eventi dalla chiamata API
@@ -37,7 +40,7 @@ public class TicketMasterService {
         }
         catch ( Exception e ) {
             e.printStackTrace();
-            return null;
+            return null;    //TO-DO: eccezione da gestire
         }
     }
 }
