@@ -7,9 +7,15 @@ import org.json.simple.JSONObject;
 import java.util.ArrayList;
 
 
-public class EventParser {
+public class EventsParser {
 
     private ArrayList<Event> events = new ArrayList<>();
+
+    private JSONObject tappetoVolante = new JSONObject();
+
+    public JSONObject getTappetoVolante() {
+        return tappetoVolante;
+    }
 
     public ArrayList<Event> getEvents() {
         return events;
@@ -51,10 +57,15 @@ public class EventParser {
     public void parseEventsArray(Object o) {
         JSONObject jO= (JSONObject) o;
         JSONObject embedded1 = (JSONObject) jO.get("_embedded");
-        JSONArray eventsArr = (JSONArray) embedded1.get("events");
-        for (Object value : eventsArr) {
+        JSONArray eventsArray = (JSONArray) embedded1.get("events");
+        for (Object value : eventsArray) {
             JSONObject eventoTemp = (JSONObject) value;
             events.add(parseEvent(eventoTemp));
         }
+        tappetoVolante.put("list events", events);
+        JSONObject page = (JSONObject) jO.get("page");
+            Number numberEvents = (Number) page.get("size");
+        tappetoVolante.put("number events", numberEvents);
+
     }
 }
