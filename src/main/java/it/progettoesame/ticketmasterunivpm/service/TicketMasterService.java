@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Map;
 
 
 @Service
@@ -18,24 +17,27 @@ public class TicketMasterService {
 
     final private String urlBase = "https://app.ticketmaster.com/discovery/v2/events.json?";
     final private String apiKey = "apikey=ytOGRTWK4lKDd4B9gvj8odbPaejuGh8V";
+    private String[] EUcountries = {"AT", "DE", "GB", "IE", "SE"};
 
     //Metodo che ricava l'url attraverso i parametri inseriti dall'utente
-    public String getUrl(Map<String, String> rP) {
-        String urlTemp = urlBase;
-        String country = "countryCode=" + rP.getOrDefault("countryCode", "DE") + "&";
-        if (rP.containsKey("size"))
-            urlTemp += "size=" + rP.get("size") + "&";
-        return urlTemp + country + apiKey;
+    public String getUrl(String paramSize, String paramCountry) {
+
+        String country = "countryCode=" + paramCountry + "&";
+        String size = "size=" + paramSize + "&";
+        return urlBase + country + size + apiKey;
     }
 
     //Metodo che ricava gli eventi dalla chiamata API
-    public ArrayList<Event> getEventsFromURL(String url) {
+    public ArrayList<Event> getEventsFromURL(String param) {
         try {
             EventsParser eventsParser = new EventsParser();
-            InputStream input = new URL(url).openStream();
-            JSONParser parser = new JSONParser();
-            JSONObject result = (JSONObject) parser.parse(new InputStreamReader(input));
-            return eventsParser.buildEventsArray(result);  //Qui viene richiamato il metodo che costruisce la lista degli eventi
+            for (String EUcountry : EUcountries) {
+                InputStream input = new URL(getUrl(param, EUcountry)).openStream();
+                JSONParser parser = new JSONParser();
+                JSONObject result = (JSONObject) parser.parse(new InputStreamReader(input));
+                eventsParser.buildEventsArray(result);
+            }
+            return eventsParser.getEvents();
         }
         catch ( Exception e ) {
             e.printStackTrace();

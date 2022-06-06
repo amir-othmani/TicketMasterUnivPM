@@ -10,19 +10,17 @@ public class Event {
     private String country;
     private String city;
     private String local_date;
-    private String local_time;
     private String segment;
     private String genre;
     private String subgenre;
 
-    public Event(String name, String id, String url, String country, String city, String local_date, String local_time, String segment, String genre, String subgenre) {
+    public Event(String name, String id, String url, String country, String city, String local_date, String segment, String genre, String subgenre) {
         this.name = name;
         this.id = id;
         this.url = url;
         this.country = country;
         this.city = city;
         this.local_date = local_date;
-        this.local_time = local_time;
         this.segment = segment;
         this.genre = genre;
         this.subgenre = subgenre;
@@ -76,14 +74,6 @@ public class Event {
         this.local_date = local_date;
     }
 
-    public String getLocal_time() {
-        return local_time;
-    }
-
-    public void setLocal_time(String local_time) {
-        this.local_time = local_time;
-    }
-
     public String getSegment() {
         return segment;
     }
@@ -108,19 +98,4 @@ public class Event {
         this.subgenre = subgenre;
     }
 
-    //MATERIALE DA NON TOCCARE
-    /*
-    public String toString() {
-        String message =
-                "Name: " + name + "\n" +
-                "Id: " + id + "\n" +
-                "Url: " + url + "\n" +
-                "localDate: " + localDate + "\n" +
-                "localTime: " + localTime + "\n" +
-                "Segment: " + segment + "\n" +
-                "Genre: " + genre + "\n" +
-                "SubGenre: " + subGenre + "\n\n";
-        return message;
-    }
-     */
 }
