@@ -10,11 +10,6 @@ import java.util.ArrayList;
 public class EventsParser {
 
     private ArrayList<Event> events = new ArrayList<>();
-    private JSONObject requestedOutput = new JSONObject();
-
-    public JSONObject getRequestedOutput() {
-        return requestedOutput;
-    }
 
     public ArrayList<Event> getEvents() {
         return events;
@@ -44,26 +39,20 @@ public class EventsParser {
         JSONObject embedded2 = (JSONObject) jsonObject.get("_embedded");
             JSONArray venues = (JSONArray) embedded2.get("venues");
             JSONObject venue = (JSONObject) venues.get(0);
-                String venueName = (String) venue.get("name");
                 JSONObject city = (JSONObject) venue.get("city");
                     String cityName = (String) city.get("name");
                 JSONObject country = (JSONObject) venue.get("country");
                     String countryName = (String) country.get("name");
-        return new Event(name, id, url, countryName, cityName, venueName, localDate, localTime, segmentName, genreName, subGenreName);
+        return new Event(name, id, url, countryName, cityName, localDate, localTime, segmentName, genreName, subGenreName);
     }
 
     //Metodo che raggruppa gli eventi e li restituisce insieme al numero di eventi
-    public void buildRequestedOutput(JSONObject o) {
+    public void buildEventsArray(JSONObject o) {
         JSONObject embedded1 = (JSONObject) o.get("_embedded");
         JSONArray eventsArray = (JSONArray) embedded1.get("events");
         for (Object value : eventsArray) {
             JSONObject eventoTemp = (JSONObject) value;
             events.add(parseEvent(eventoTemp));
         }
-        requestedOutput.put("list_events", events);
-        JSONObject page = (JSONObject) o.get("page");
-            Number numberEvents = (Number) page.get("size");
-        requestedOutput.put("number_events", numberEvents);
-
     }
 }

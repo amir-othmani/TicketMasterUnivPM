@@ -9,20 +9,18 @@ public class Event {
     private String url;
     private String country;
     private String city;
-    private String venue;
     private String local_date;
     private String local_time;
     private String segment;
     private String genre;
     private String subgenre;
 
-    public Event(String name, String id, String url, String country, String city, String venue, String local_date, String local_time, String segment, String genre, String subgenre) {
+    public Event(String name, String id, String url, String country, String city, String local_date, String local_time, String segment, String genre, String subgenre) {
         this.name = name;
         this.id = id;
         this.url = url;
         this.country = country;
         this.city = city;
-        this.venue = venue;
         this.local_date = local_date;
         this.local_time = local_time;
         this.segment = segment;
@@ -68,14 +66,6 @@ public class Event {
 
     public void setCity(String city) {
         this.city = city;
-    }
-
-    public String getVenue() {
-        return venue;
-    }
-
-    public void setVenue(String venue) {
-        this.venue = venue;
     }
 
     public String getLocal_date() {
