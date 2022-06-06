@@ -10,21 +10,21 @@ public class Event {
     private String country;
     private String city;
     private String venue;
-    private String localdate;
-    private String localtime;
+    private String local_date;
+    private String local_time;
     private String segment;
     private String genre;
     private String subgenre;
 
-    public Event(String name, String id, String url, String country, String city, String venue, String localdate, String localtime, String segment, String genre, String subgenre) {
+    public Event(String name, String id, String url, String country, String city, String venue, String local_date, String local_time, String segment, String genre, String subgenre) {
         this.name = name;
         this.id = id;
         this.url = url;
         this.country = country;
         this.city = city;
         this.venue = venue;
-        this.localdate = localdate;
-        this.localtime = localtime;
+        this.local_date = local_date;
+        this.local_time = local_time;
         this.segment = segment;
         this.genre = genre;
         this.subgenre = subgenre;
@@ -78,20 +78,20 @@ public class Event {
         this.venue = venue;
     }
 
-    public String getLocaldate() {
-        return localdate;
+    public String getLocal_date() {
+        return local_date;
     }
 
-    public void setLocaldate(String localdate) {
-        this.localdate = localdate;
+    public void setLocal_date(String local_date) {
+        this.local_date = local_date;
     }
 
-    public String getLocaltime() {
-        return localtime;
+    public String getLocal_time() {
+        return local_time;
     }
 
-    public void setLocaltime(String localtime) {
-        this.localtime = localtime;
+    public void setLocal_time(String local_time) {
+        this.local_time = local_time;
     }
 
     public String getSegment() {

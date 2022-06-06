@@ -11,16 +11,20 @@ import java.net.URL;
 
 public class TicketMasterService {
 
-    final private String url = "https://app.ticketmaster.com/discovery/v2/events.json?size=13aA&apikey=ytOGRTWK4lKDd4B9gvj8odbPaejuGh8V";
-    final private EventsParser eventsParser = new EventsParser();
+    final private String urlBase = "https://app.ticketmaster.com/discovery/v2/events.json?";
+    final private String apiKey = "apikey=ytOGRTWK4lKDd4B9gvj8odbPaejuGh8V";
+    private EventsParser eventsParser = null;
+
+    String url = urlBase + apiKey;
 
     //Metodo che ricava gli eventi dalla chiamata API
     public void getEventsFromURL() {
         try {
+            eventsParser = new EventsParser();
             InputStream input = new URL(url).openStream();
             JSONParser parser = new JSONParser();
             JSONObject result = (JSONObject) parser.parse(new InputStreamReader(input));
-            eventsParser.parseEventsArray(result);  //Qui viene richiamato il metodo che costruisce la lista degli eventi
+            eventsParser.buildRequestedOutput(result);  //Qui viene richiamato il metodo che costruisce la lista degli eventi
         }
         catch ( Exception e ) {
             e.printStackTrace();
@@ -28,6 +32,6 @@ public class TicketMasterService {
     }
 
     public JSONObject getNotFilteredEvents (){
-            return eventsParser.getTappetoVolante();
+            return eventsParser.getRequestedOutput();
     }
 }

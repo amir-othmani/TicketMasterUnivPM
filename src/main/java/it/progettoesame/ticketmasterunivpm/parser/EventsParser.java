@@ -10,11 +10,10 @@ import java.util.ArrayList;
 public class EventsParser {
 
     private ArrayList<Event> events = new ArrayList<>();
+    private JSONObject requestedOutput = new JSONObject();
 
-    private JSONObject tappetoVolante = new JSONObject();
-
-    public JSONObject getTappetoVolante() {
-        return tappetoVolante;
+    public JSONObject getRequestedOutput() {
+        return requestedOutput;
     }
 
     public ArrayList<Event> getEvents() {
@@ -53,19 +52,18 @@ public class EventsParser {
         return new Event(name, id, url, countryName, cityName, venueName, localDate, localTime, segmentName, genreName, subGenreName);
     }
 
-    //Metodo che raggruppa gli eventi
-    public void parseEventsArray(Object o) {
-        JSONObject jO= (JSONObject) o;
-        JSONObject embedded1 = (JSONObject) jO.get("_embedded");
+    //Metodo che raggruppa gli eventi e li restituisce insieme al numero di eventi
+    public void buildRequestedOutput(JSONObject o) {
+        JSONObject embedded1 = (JSONObject) o.get("_embedded");
         JSONArray eventsArray = (JSONArray) embedded1.get("events");
         for (Object value : eventsArray) {
             JSONObject eventoTemp = (JSONObject) value;
             events.add(parseEvent(eventoTemp));
         }
-        tappetoVolante.put("list events", events);
-        JSONObject page = (JSONObject) jO.get("page");
+        requestedOutput.put("list_events", events);
+        JSONObject page = (JSONObject) o.get("page");
             Number numberEvents = (Number) page.get("size");
-        tappetoVolante.put("number events", numberEvents);
+        requestedOutput.put("number_events", numberEvents);
 
     }
 }
