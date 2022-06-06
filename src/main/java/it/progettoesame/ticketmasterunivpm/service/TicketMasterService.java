@@ -10,34 +10,34 @@ import org.springframework.stereotype.Service;
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Map;
 
 
 @Service
 public class TicketMasterService {
 
-    private EventsParser eventsParser = null;
+    final private String urlBase = "https://app.ticketmaster.com/discovery/v2/events.json?";
+    final private String apiKey = "apikey=ytOGRTWK4lKDd4B9gvj8odbPaejuGh8V";
 
-    public String buildUrl(String p) {
-        String urlBase = "https://app.ticketmaster.com/discovery/v2/events.json?";
-        String apiKey = "apikey=ytOGRTWK4lKDd4B9gvj8odbPaejuGh8V";
-        return urlBase + "countryCode=" + p + "&" + apiKey;
+    public String getUrl(Map<String, String> rP) {
+        if (rP.containsKey("countryCode"))
+            return urlBase + "countryCode=" + rP.get("countryCode") + "&" + apiKey;
+        else
+            return urlBase + "countryCode=DE&" + apiKey;
     }
 
     //Metodo che ricava gli eventi dalla chiamata API
-    public void getEventsFromURL(String param) {
+    public ArrayList<Event> getEventsFromURL(String url) {
         try {
-            eventsParser = new EventsParser();
-            InputStream input = new URL(buildUrl(param)).openStream();
+            EventsParser eventsParser = new EventsParser();
+            InputStream input = new URL(url).openStream();
             JSONParser parser = new JSONParser();
             JSONObject result = (JSONObject) parser.parse(new InputStreamReader(input));
-            eventsParser.buildEventsArray(result);  //Qui viene richiamato il metodo che costruisce la lista degli eventi
+            return eventsParser.buildEventsArray(result);  //Qui viene richiamato il metodo che costruisce la lista degli eventi
         }
         catch ( Exception e ) {
             e.printStackTrace();
+            return null;
         }
-    }
-
-    public ArrayList<Event> getNotFilteredEvents (){
-            return eventsParser.getEvents();
     }
 }

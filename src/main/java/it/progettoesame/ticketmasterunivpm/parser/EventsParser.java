@@ -11,6 +11,7 @@ public class EventsParser {
 
     private ArrayList<Event> events = new ArrayList<>();
 
+    /*
     public ArrayList<Event> getEvents() {
         return events;
     }
@@ -18,6 +19,8 @@ public class EventsParser {
     public void setEvents(ArrayList<Event> events) {
         this.events = events;
     }
+
+     */
 
     //Metodo che costruisce il singolo evento
     public Event parseEvent(JSONObject jsonObject) {
@@ -47,12 +50,13 @@ public class EventsParser {
     }
 
     //Metodo che raggruppa gli eventi e li restituisce insieme al numero di eventi
-    public void buildEventsArray(JSONObject o) {
+    public ArrayList<Event> buildEventsArray(JSONObject o) {
         JSONObject embedded1 = (JSONObject) o.get("_embedded");
         JSONArray eventsArray = (JSONArray) embedded1.get("events");
         for (Object value : eventsArray) {
             JSONObject eventoTemp = (JSONObject) value;
             events.add(parseEvent(eventoTemp));
         }
+        return events;
     }
 }

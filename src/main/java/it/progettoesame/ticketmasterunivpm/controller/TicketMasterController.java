@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
 
 
 //Il controller gestisce le chiamate
@@ -20,8 +21,8 @@ public class TicketMasterController {
 
     //Rotta che restituisce gli eventi non filtrati
     @RequestMapping("/events")
-    public ResponseEntity<Object> getRawEvents(@RequestParam(name = "countryCode", defaultValue = "DE") String country) {
-        ticketMasterService.getEventsFromURL(country);
-        return new ResponseEntity<>(ticketMasterService.getNotFilteredEvents(), HttpStatus.OK);
+    public ResponseEntity<Object> getRawEvents(@RequestParam Map<String, String> requestParam) {
+        String urlApi = ticketMasterService.getUrl(requestParam);
+        return new ResponseEntity<>(ticketMasterService.getEventsFromURL(urlApi), HttpStatus.OK);
     }
 }
