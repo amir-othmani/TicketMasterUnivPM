@@ -22,11 +22,10 @@ public class TicketMasterService {
     //Metodo che ricava l'url attraverso i parametri inseriti dall'utente
     public String getUrl(Map<String, String> rP) {
         String urlTemp = urlBase;
-        if (rP.containsKey("countryCode"))
-            urlTemp += "countryCode=" + rP.getOrDefault("countryCode", "DE") + "&";
+        String country = "countryCode=" + rP.getOrDefault("countryCode", "DE") + "&";
         if (rP.containsKey("size"))
             urlTemp += "size=" + rP.get("size") + "&";
-        return urlTemp + apiKey;
+        return urlTemp + country + apiKey;
     }
 
     //Metodo che ricava gli eventi dalla chiamata API
