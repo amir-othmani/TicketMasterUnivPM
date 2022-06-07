@@ -19,7 +19,8 @@ public class TicketMasterController {
 
     //Rotta che restituisce gli eventi non filtrati
     @RequestMapping("/events")
-    public ResponseEntity<Object> getNotFilteredEvents(@RequestParam(name = "size", defaultValue = "1") String size) {
-        return new ResponseEntity<>(ticketMasterService.getEventsFromURL(size), HttpStatus.OK);
+    public ResponseEntity<Object> getNotFilteredEvents(@RequestParam(name = "size", defaultValue = "20") String size,
+                                                       @RequestParam(name = "countryCode", defaultValue = "DE") String country) {
+        return new ResponseEntity<>(ticketMasterService.getEventsFromURL(size, country), HttpStatus.OK);
     }
 }
