@@ -23,4 +23,9 @@ public class TicketMasterController {
                                                        @RequestParam(name = "countryCode", defaultValue = "DE") String country) {
         return new ResponseEntity<>(ticketMasterService.getEventsFromURL(size, country), HttpStatus.OK);
     }
+
+    @RequestMapping("events/filter")
+    public String getFilteredEvents() {
+        return "snap back to reality";
+    }
 }
