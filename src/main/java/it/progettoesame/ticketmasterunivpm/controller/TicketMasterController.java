@@ -19,7 +19,8 @@ public class TicketMasterController {
     @Autowired
     TicketMasterService ticketMasterService;
 
-    //Rotta che restituisce gli eventi non filtrati
+    //Rotta che restituisce gli eventi
+    //TO-DO: QUESTA ROTTA è DA MODIFICARE
     @RequestMapping("/events")
     public ResponseEntity<Object> getNotFilteredEvents(@RequestParam(name = "size", defaultValue = "1") String size,
                                                        @RequestParam(name = "countryCode", defaultValue = "none") String country) {
