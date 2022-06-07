@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-public class EventFilter {
+public class EventsFilter {
     Map<String, String> parameter = new Map<String, String>() {
         @Override
         public int size() {
@@ -66,4 +66,7 @@ public class EventFilter {
             return null;
         }
     };
+
+    //TO-DO: METODI ANCORA DA INVENTARE
 }
+

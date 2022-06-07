@@ -22,12 +22,8 @@ public class TicketMasterController {
     //Rotta che restituisce gli eventi
     //TO-DO: QUESTA ROTTA è DA MODIFICARE
     @RequestMapping("/events")
-    public ResponseEntity<Object> getNotFilteredEvents(@RequestParam(name = "size", defaultValue = "1") String size,
-                                                       @RequestParam(name = "countryCode", defaultValue = "none") String country) {
-        if (country.equals("none"))
-            return new ResponseEntity<>("Please insert a european country", HttpStatus.OK);
-        else
-            return new ResponseEntity<>(ticketMasterService.getEventsFromURL(size, country), HttpStatus.OK);
+    public ResponseEntity<Object> getNotFilteredEvents(@RequestParam Map<String, String> selectedParam) {
+        return new ResponseEntity<>(ticketMasterService.getEventsFromURL(selectedParam), HttpStatus.OK);
     }
 
     @RequestMapping("/events/filter")
