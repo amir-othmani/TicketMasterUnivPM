@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 
 //Il controller gestisce le chiamate
 @RestController
@@ -24,8 +26,8 @@ public class TicketMasterController {
         return new ResponseEntity<>(ticketMasterService.getEventsFromURL(size, country), HttpStatus.OK);
     }
 
-    @RequestMapping("events/filter")
-    public String getFilteredEvents() {
-        return "snap back to reality";
+    @RequestMapping("/events/filter")
+    public ResponseEntity<Object> getFilteredEvents(@RequestParam Map<String, String> requestParam) {
+        return new ResponseEntity<>(requestParam.getOrDefault("snap", "snap back to reality"), HttpStatus.OK);
     }
 }

@@ -35,10 +35,13 @@ public class TicketMasterService {
                 eventsParser.buildEventsArray(result);
                 return eventsParser.getEvents();
         }
-
         catch ( Exception e ) {
             e.printStackTrace();
             return null;    //TO-DO: eccezione da gestire
         }
+    }
+
+    public void filerEvents() {
+        //TO-DO: scriverci qualcosa
     }
 }
