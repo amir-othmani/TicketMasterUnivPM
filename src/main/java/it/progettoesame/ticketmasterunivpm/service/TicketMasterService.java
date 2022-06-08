@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Map;
 
 
@@ -18,7 +17,7 @@ import java.util.Map;
 public class TicketMasterService {
 
     final private JSONObject events = new JSONObject();
-    final private String[] supportedParam = {"country", "city", "segment", "genre", "name"};
+    final private String[] supportedParam = {"country", "city", "local_date", "segment", "genre", "subgenre"};
     private String currentCountry = " ";
 
     //Metodo che ricava l'url attraverso i parametri inseriti dall'utente
