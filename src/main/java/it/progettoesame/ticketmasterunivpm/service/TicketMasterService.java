@@ -35,8 +35,8 @@ public class TicketMasterService {
                 JSONParser parser = new JSONParser();
                 JSONObject result = (JSONObject) parser.parse(new InputStreamReader(input));
                 eventsParser.buildEventsArray(result);
-                events.put("found_events", eventsParser.getNumEvents());
-                events.put("list_events", eventsParser.getNotFilteredEvents());
+                events.put("num_events_found", eventsParser.getNumEvents());
+                events.put("list_events_found", eventsParser.getNotFilteredEvents());
                 //TO-DO: forse c'è qualche modifica da fare qui (forse anche nella classe EventsParser)
         }
         catch ( Exception e ) {
@@ -61,15 +61,11 @@ public class TicketMasterService {
         if (!currentCountry.equals(selectedParameters.get("country"))) {
             currentCountry = selectedParameters.get("country");
             buildEventsFromURL(currentCountry);
+            selectedParameters.remove("country");
         }
-        else if (!selectedParameters.isEmpty()){
-            currentCountry = selectedParameters.get("country");
-            if (events.isEmpty())
-                buildEventsFromURL(currentCountry);
+        if (!selectedParameters.isEmpty()){
             EventsFilter eventsFilter = new EventsFilter();
-            ArrayList<String> keysToFilter = new ArrayList<>();
-            keysToFilter.addAll(eventsFilter.getKeys(selectedParameters, supportedParam));
-            return  eventsFilter.getFilteredEvents(events, keysToFilter);
+            return  eventsFilter.getFilteredEvents(events, selectedParameters);
         }
         return events;
     }

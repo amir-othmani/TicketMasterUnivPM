@@ -1,8 +1,6 @@
 package it.progettoesame.ticketmasterunivpm.filter;
 
 import it.progettoesame.ticketmasterunivpm.model.Event;
-
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
@@ -12,42 +10,28 @@ import java.util.Map;
 public class EventsFilter {
 
     private JSONObject filteredEvents = new JSONObject();
+    private ArrayList<Event> gatheredEvents = new ArrayList<>();
 
-
-    public ArrayList<String> getKeys(Map<String, String> parameters, String[] totalParameters) {
-        ArrayList<String> keys = new ArrayList<>();
-        for (int i=0; i<totalParameters.length; i++) {
-            if (parameters.containsKey(totalParameters[i]))
-                keys.add(totalParameters[i]);
-        }
-        return keys;
-    }
-
-    public boolean checkFilters(ArrayList<String> keysToCheck, Event eventToCheck) {
-        int verify=0;
-        for (String key: keysToCheck) {
-            if (key.equals("name") ||
-                key.equals("city") ||
-                key.equals("segment") ||
-                key.equals("genre"))
-                verify++;
-        }
-        if (verify== keysToCheck.size())
-            return true;
-        else
+    public boolean checkFilters(Map<String, String> param, Event e) {
+        if (param.containsKey("name") && !e.getName().equals(param.get("name")))
+                return false;
+        if (param.containsKey("city") && !e.getCity().equals(param.get("city")))
+                return false;
+        if (param.containsKey("segment") && !e.getSegment().equals(param.get("segment")))
             return false;
+        if (param.containsKey("genre") && !e.getGenre().equals(param.get("genre")))
+            return false;
+        return true;
     }
 
-    public JSONObject getFilteredEvents(JSONObject objectToFilter, ArrayList<String> keys) {
-        ArrayList<Event> eventsArrayList = new ArrayList<>();
-        JSONArray eventsTofilter = (JSONArray) objectToFilter.get("list_events");
-        for (Object eventTemp : eventsTofilter) {
-            Event event = (Event) eventTemp;
-            if (checkFilters(keys, event))
-                eventsArrayList.add(event);
+    public JSONObject getFilteredEvents(JSONObject objectToFilter, Map<String, String> parameters) {
+        ArrayList<Event> eventsToFilter = (ArrayList<Event>) objectToFilter.get("list_events_found");
+        for (Event event: eventsToFilter) {
+            if (checkFilters(parameters, event))
+                gatheredEvents.add(event);
         }
-        filteredEvents.put("list_filtered_events", eventsArrayList);
-        filteredEvents.put("found_filtered_events", eventsArrayList.size());
+        filteredEvents.put("list_events_filtered", gatheredEvents);
+        filteredEvents.put("num_events_filtered", gatheredEvents.size());
         return filteredEvents;
     }
 }
