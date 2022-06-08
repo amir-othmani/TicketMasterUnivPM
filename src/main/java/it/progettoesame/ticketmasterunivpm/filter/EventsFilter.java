@@ -1,72 +1,54 @@
 package it.progettoesame.ticketmasterunivpm.filter;
 
-import java.util.Collection;
+import it.progettoesame.ticketmasterunivpm.model.Event;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+import java.util.ArrayList;
 import java.util.Map;
-import java.util.Set;
+
 
 public class EventsFilter {
-    Map<String, String> parameter = new Map<String, String>() {
-        @Override
-        public int size() {
-            return 0;
-        }
 
-        @Override
-        public boolean isEmpty() {
+    private JSONObject filteredEvents = new JSONObject();
+
+
+    public ArrayList<String> getKeys(Map<String, String> parameters, String[] totalParameters) {
+        ArrayList<String> keys = new ArrayList<>();
+        for (int i=0; i<totalParameters.length; i++) {
+            if (parameters.containsKey(totalParameters[i]))
+                keys.add(totalParameters[i]);
+        }
+        return keys;
+    }
+
+    public boolean checkFilters(ArrayList<String> keysToCheck, Event eventToCheck) {
+        int verify=0;
+        for (String key: keysToCheck) {
+            if (key.equals("name") ||
+                key.equals("city") ||
+                key.equals("segment") ||
+                key.equals("genre"))
+                verify++;
+        }
+        if (verify== keysToCheck.size())
+            return true;
+        else
             return false;
+    }
+
+    public JSONObject getFilteredEvents(JSONObject objectToFilter, ArrayList<String> keys) {
+        ArrayList<Event> eventsArrayList = new ArrayList<>();
+        JSONArray eventsTofilter = (JSONArray) objectToFilter.get("list_events");
+        for (Object eventTemp : eventsTofilter) {
+            Event event = (Event) eventTemp;
+            if (checkFilters(keys, event))
+                eventsArrayList.add(event);
         }
-
-        @Override
-        public boolean containsKey(Object key) {
-            return false;
-        }
-
-        @Override
-        public boolean containsValue(Object value) {
-            return false;
-        }
-
-        @Override
-        public String get(Object key) {
-            return null;
-        }
-
-        @Override
-        public String put(String key, String value) {
-            return null;
-        }
-
-        @Override
-        public String remove(Object key) {
-            return null;
-        }
-
-        @Override
-        public void putAll(Map<? extends String, ? extends String> m) {
-
-        }
-
-        @Override
-        public void clear() {
-
-        }
-
-        @Override
-        public Set<String> keySet() {
-            return null;
-        }
-
-        @Override
-        public Collection<String> values() {
-            return null;
-        }
-
-        @Override
-        public Set<Entry<String, String>> entrySet() {
-            return null;
-        }
-    };
-
-    //TO-DO: METODI ANCORA DA INVENTARE
+        filteredEvents.put("list_filtered_events", eventsArrayList);
+        filteredEvents.put("found_filtered_events", eventsArrayList.size());
+        return filteredEvents;
+    }
 }
 

@@ -97,5 +97,4 @@ public class Event {
     public void setSubgenre(String subgenre) {
         this.subgenre = subgenre;
     }
-
 }

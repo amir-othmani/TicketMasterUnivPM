@@ -1,6 +1,7 @@
 package it.progettoesame.ticketmasterunivpm.parser;
 
 import it.progettoesame.ticketmasterunivpm.model.Event;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -9,10 +10,14 @@ import java.util.ArrayList;
 
 public class EventsParser {
 
-    private ArrayList<Event> events = new ArrayList<>();
+    private ArrayList<Event> notFilteredEvents = new ArrayList<>();
 
-    public ArrayList<Event> getEvents() {
-        return events;
+    public ArrayList<Event> getNotFilteredEvents() {
+        return notFilteredEvents;
+    }
+
+    public Integer getNumEvents() {
+        return notFilteredEvents.size();
     }
 
     //Metodo che costruisce il singolo evento
@@ -41,13 +46,15 @@ public class EventsParser {
         return new Event(name, id, url, countryName, cityName, localDate, segmentName, genreName, subGenreName);
     }
 
+
+
     //Metodo che raggruppa gli eventi e li restituisce insieme al numero di eventi
     public void buildEventsArray(JSONObject o) {
         JSONObject embedded1 = (JSONObject) o.get("_embedded");
         JSONArray eventsArray = (JSONArray) embedded1.get("events");
         for (Object value : eventsArray) {
             JSONObject eventoTemp = (JSONObject) value;
-            events.add(parseEvent(eventoTemp));
+            notFilteredEvents.add(parseEvent(eventoTemp));
         }
     }
 }
