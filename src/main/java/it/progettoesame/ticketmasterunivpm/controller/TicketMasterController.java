@@ -34,6 +34,13 @@ public class TicketMasterController {
 
     @RequestMapping("/stats")
     public ResponseEntity<Object> getStats(@RequestParam Map<String, String> statsParam) {
-        return null;
+        if (ticketMasterService.areSupportedParam(statsParam, ticketMasterService.getSupportedStatsParam())) {
+            if (statsParam.containsKey("country"))
+                return new ResponseEntity<>(ticketMasterService.getStats(statsParam), HttpStatus.OK);
+            else
+                return new ResponseEntity<>("Please select a european country", HttpStatus.BAD_REQUEST);
+        }
+        else
+            return new ResponseEntity<>("Not supported parameters", HttpStatus.BAD_REQUEST);
     }
 }

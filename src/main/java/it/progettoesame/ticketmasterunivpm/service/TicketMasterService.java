@@ -2,9 +2,9 @@ package it.progettoesame.ticketmasterunivpm.service;
 
 
 import it.progettoesame.ticketmasterunivpm.filter.EventsFilter;
-import it.progettoesame.ticketmasterunivpm.model.Event;
 import it.progettoesame.ticketmasterunivpm.parser.EventsParser;
 
+import it.progettoesame.ticketmasterunivpm.stats.EventsStats;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Service;
@@ -18,10 +18,11 @@ import java.util.Map;
 public class TicketMasterService {
 
     final private JSONObject events = new JSONObject();
-    final private JSONObject stats = new JSONObject();
     final private String[] supportedEventsParam = {"country", "city", "local_date", "segment", "genre", "subgenre"};
     final private String[] supportedStatsParam = {"country", "city"};
     final private EventsParser eventsParser = new EventsParser();
+    final private EventsFilter eventsFilter = new EventsFilter();
+    final private EventsStats eventsStats = new EventsStats();
     private String currentCountry = " ";
 
     public String[] getSupportedEventsParam() {
@@ -77,10 +78,8 @@ public class TicketMasterService {
             buildEventsFromURL(currentCountry);
         }
         selectedParam.remove("country");
-        if (!selectedParam.isEmpty() && !eventsParser.getNotFilteredEvents().isEmpty()) {
-            EventsFilter eventsFilter = new EventsFilter();
-            return  eventsFilter.getFilteredEvents(events, selectedParam);
-        }
+        if (!selectedParam.isEmpty() && !eventsParser.getNotFilteredEvents().isEmpty())
+            return eventsFilter.getFilteredEvents(eventsParser.getNotFilteredEvents(), selectedParam);
         return events;
     }
 
@@ -89,10 +88,8 @@ public class TicketMasterService {
             currentCountry = selectedParam.get("country");
             buildEventsFromURL(currentCountry);
         }
-        selectedParam.remove("country");
-        if (eventsParser.getNotFilteredEvents().isEmpty())
-            stats.put("events_not_found", "there's no statistics to get");
-        //else bla bla bla
-        return stats;
+        if (selectedParam.containsKey("city"))
+            return eventsStats.statsPerWeek(eventsFilter.getListFilteredEvents(), selectedParam);
+        return eventsStats.statsPerWeek(eventsParser.getNotFilteredEvents(), selectedParam);
     }
 }

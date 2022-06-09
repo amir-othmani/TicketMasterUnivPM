@@ -17,7 +17,7 @@ public class EventsParser {
         return notFilteredEvents;
     }
 
-    public Integer getNumEvents() {
+    public int getNumEvents() {
         return notFilteredEvents.size();
     }
 

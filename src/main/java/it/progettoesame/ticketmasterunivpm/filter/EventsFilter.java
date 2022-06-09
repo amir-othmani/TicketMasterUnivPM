@@ -9,13 +9,17 @@ import java.util.Map;
 
 public class EventsFilter {
 
-    private JSONObject filteredEvents = new JSONObject();
-    private ArrayList<Event> listFilterEvents = new ArrayList<>();
+    final private JSONObject filteredEvents = new JSONObject();
+    final private ArrayList<Event> listFilteredEvents = new ArrayList<>();
+
+    public ArrayList<Event> getListFilteredEvents() {
+        return listFilteredEvents;
+    }
 
     public boolean checkFilters(Map<String, String> param, Event e) {
         if (param.containsKey("city") && !e.getCity().equals(param.get("city")))
             return false;
-        if (param.containsKey("local_date") && !e.getLocal_date().equals(param.get("local_date")))
+        if (param.containsKey("local_date") && !e.getLocal_date().toString().equals(param.get("local_date")))
             return false;
         if (param.containsKey("segment") && !e.getSegment().equals(param.get("segment")))
             return false;
@@ -26,14 +30,13 @@ public class EventsFilter {
         return true;
     }
 
-    public JSONObject getFilteredEvents(JSONObject objectToFilter, Map<String, String> parameters) {
-        ArrayList<Event> eventsToFilter = (ArrayList<Event>) objectToFilter.get("list_events_found");
+    public JSONObject getFilteredEvents(ArrayList<Event> eventsToFilter, Map<String, String> parameters) {
         for (Event event: eventsToFilter) {
             if (checkFilters(parameters, event))
-                listFilterEvents.add(event);
+                listFilteredEvents.add(event);
         }
-        filteredEvents.put("list_events_filtered", listFilterEvents);
-        filteredEvents.put("num_events_filtered", listFilterEvents.size());
+        filteredEvents.put("list_events_filtered", listFilteredEvents);
+        filteredEvents.put("num_events_filtered", listFilteredEvents.size());
         return filteredEvents;
     }
 }
