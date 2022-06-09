@@ -11,9 +11,13 @@ public class EventsStats {
 
     final private int[] counters = {0, 0, 0, 0, 0, 0, 0};
     final private String[] days = {"monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"};
-    final private JSONObject stats = new JSONObject();
 
     public JSONObject statsPerWeek(ArrayList<Event> events, Map<String, String> param) {
+        JSONObject stats = new JSONObject();
+        if (events.isEmpty()) {
+            stats.put("events_not_found", "there are no statistics to get");
+            return stats;
+        }
         for (Event e: events) {
             int dayValue = e.getLocal_date().getDayOfWeek().getValue();
             counters[dayValue-1]++;
