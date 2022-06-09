@@ -18,6 +18,7 @@ import java.util.Map;
 public class TicketMasterService {
 
     final private JSONObject events = new JSONObject();
+    final private JSONObject filteredEvents = new JSONObject();
     final private String[] supportedEventsParam = {"country", "city", "local_date", "segment", "genre", "subgenre"};
     final private String[] supportedStatsParam = {"country", "city"};
     final private EventsParser eventsParser = new EventsParser();
@@ -78,8 +79,17 @@ public class TicketMasterService {
             buildEventsFromURL(currentCountry);
         }
         selectedParam.remove("country");
-        if (!selectedParam.isEmpty() && !eventsParser.getNotFilteredEvents().isEmpty())
-            return eventsFilter.getFilteredEvents(eventsParser.getNotFilteredEvents(), selectedParam);
+        if (!selectedParam.isEmpty() && !eventsParser.getNotFilteredEvents().isEmpty()) {
+            filteredEvents.clear();
+            eventsFilter.buildFilteredEvents(eventsParser.getNotFilteredEvents(), selectedParam);
+            if (eventsFilter.getListFilteredEvents().isEmpty()) {
+                filteredEvents.put("filtered_events_not_found", "there are no events that match the seleceted filters");
+                return filteredEvents;
+            }
+            filteredEvents.put("list_filtered_events", eventsFilter.getListFilteredEvents());
+            filteredEvents.put("num_filtered_events", eventsFilter.getListFilteredEvents().size());
+            return filteredEvents;
+        }
         return events;
     }
 
@@ -88,8 +98,10 @@ public class TicketMasterService {
             currentCountry = selectedParam.get("country");
             buildEventsFromURL(currentCountry);
         }
-        if (selectedParam.containsKey("city"))
+        if (selectedParam.containsKey("city")) {
+            eventsFilter.buildFilteredEvents(eventsParser.getNotFilteredEvents(), selectedParam);
             return eventsStats.statsPerWeek(eventsFilter.getListFilteredEvents(), selectedParam);
+        }
         return eventsStats.statsPerWeek(eventsParser.getNotFilteredEvents(), selectedParam);
     }
 }

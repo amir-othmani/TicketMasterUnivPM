@@ -30,14 +30,13 @@ public class EventsFilter {
         return true;
     }
 
-    public JSONObject getFilteredEvents(ArrayList<Event> eventsToFilter, Map<String, String> parameters) {
+    public void buildFilteredEvents(ArrayList<Event> eventsToFilter, Map<String, String> parameters) {
+        filteredEvents.clear();
+        listFilteredEvents.clear();
         for (Event event: eventsToFilter) {
             if (checkFilters(parameters, event))
                 listFilteredEvents.add(event);
         }
-        filteredEvents.put("list_events_filtered", listFilteredEvents);
-        filteredEvents.put("num_events_filtered", listFilteredEvents.size());
-        return filteredEvents;
     }
 }
 

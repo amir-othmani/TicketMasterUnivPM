@@ -22,14 +22,15 @@ public class EventsStats {
             int dayValue = e.getLocal_date().getDayOfWeek().getValue();
             counters[dayValue-1]++;
         }
-        int max = indexOfMax(counters);
-        int min = indexOfMin(counters);
-        double avr = Math.round(events.size()/7.0*100.0)/100.0;
         stats.put("country", events.get(0).getCountry());
         if (param.containsKey("city"))
-            stats.put("city", events.get(0).getCity());
+            stats.put("city", param.get("city"));
+        stats.put("num_events_found", events.size());
+        double avr = Math.round(events.size()/7.0*100.0)/100.0;
         stats.put("num_average_events", avr);
+        int min = indexOfMin(counters);
         stats.put("min_events", buildJsonObj(counters[min], days[min]));
+        int max = indexOfMax(counters);
         stats.put("max_events", buildJsonObj(counters[max], days[max]));
         return stats;
     }

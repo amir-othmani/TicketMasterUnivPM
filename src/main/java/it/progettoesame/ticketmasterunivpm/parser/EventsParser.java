@@ -22,15 +22,15 @@ public class EventsParser {
     }
 
     //Metodo che costruisce il singolo evento
-    public Event parseEvent(JSONObject jsonObject) {
-        String name = (String) jsonObject.get("name");
-        String id = (String) jsonObject.get("id");
-        String url = (String) jsonObject.get("url");
-        JSONObject dates = (JSONObject) jsonObject.get("dates");
+    public Event parseEvent(JSONObject jsonEvent) {
+        String name = (String) jsonEvent.get("name");
+        String id = (String) jsonEvent.get("id");
+        String url = (String) jsonEvent.get("url");
+        JSONObject dates = (JSONObject) jsonEvent.get("dates");
             JSONObject start = (JSONObject) dates.get("start");
                 String localDate = (String) start.get("localDate");
                 LocalDate locDt = LocalDate.parse(localDate);
-        JSONArray classifications = (JSONArray) jsonObject.get("classifications");
+        JSONArray classifications = (JSONArray) jsonEvent.get("classifications");
         JSONObject classificationsTemp = (JSONObject) classifications.get(0);
             JSONObject segment = (JSONObject) classificationsTemp.get("segment");
                 String segmentName = (String) segment.get("name");
@@ -38,7 +38,7 @@ public class EventsParser {
                 String genreName = (String) genre.get("name");
             JSONObject subGenre = (JSONObject) classificationsTemp.get("subGenre");
                 String subGenreName = (String) subGenre.get("name");
-        JSONObject embedded2 = (JSONObject) jsonObject.get("_embedded");
+        JSONObject embedded2 = (JSONObject) jsonEvent.get("_embedded");
             JSONArray venues = (JSONArray) embedded2.get("venues");
             JSONObject venue = (JSONObject) venues.get(0);
                 JSONObject city = (JSONObject) venue.get("city");
@@ -51,9 +51,9 @@ public class EventsParser {
 
 
     //Metodo che raggruppa gli eventi e li restituisce insieme al numero di eventi
-    public void buildEventsArray(JSONObject o) {
+    public void buildEventsArray(JSONObject jsonObject) {
         notFilteredEvents.clear();
-        JSONObject embedded1 = (JSONObject) o.get("_embedded");
+        JSONObject embedded1 = (JSONObject) jsonObject.get("_embedded");
         if (embedded1 == null)
             return;
         JSONArray eventsArray = (JSONArray) embedded1.get("events");
