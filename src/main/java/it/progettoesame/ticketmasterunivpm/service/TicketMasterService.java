@@ -18,6 +18,7 @@ public class TicketMasterService {
 
     final private JSONObject events = new JSONObject();
     final private String[] supportedParam = {"country", "city", "local_date", "segment", "genre", "subgenre"};
+    final private EventsParser eventsParser = new EventsParser();
     private String currentCountry = " ";
 
     //Metodo che ricava l'url attraverso i parametri inseriti dall'utente
@@ -29,13 +30,16 @@ public class TicketMasterService {
     //Metodo che ricava gli eventi dalla chiamata API
     public void buildEventsFromURL(String selectedCountry) {
         try {
-                EventsParser eventsParser = new EventsParser();
                 InputStream input = new URL(getUrl(selectedCountry)).openStream();
                 JSONParser parser = new JSONParser();
                 JSONObject result = (JSONObject) parser.parse(new InputStreamReader(input));
                 eventsParser.buildEventsArray(result);
-                events.put("num_events_found", eventsParser.getNumEvents());
-                events.put("list_events_found", eventsParser.getNotFilteredEvents());
+                if (eventsParser.getNotFilteredEvents().isEmpty())
+                    events.put("events_not_found", "we're sorry, but there are no available events in this country");
+                else {
+                    events.put("num_events_found", eventsParser.getNumEvents());
+                    events.put("list_events_found", eventsParser.getNotFilteredEvents());
+                }
                 //TO-DO: forse c'è qualche modifica da fare qui (forse anche nella classe EventsParser)
         }
         catch ( Exception e ) {
@@ -62,7 +66,7 @@ public class TicketMasterService {
             buildEventsFromURL(currentCountry);
             selectedParameters.remove("country");
         }
-        if (!selectedParameters.isEmpty()){
+        if (!selectedParameters.isEmpty() && !eventsParser.getNotFilteredEvents().isEmpty()){
             EventsFilter eventsFilter = new EventsFilter();
             return  eventsFilter.getFilteredEvents(events, selectedParameters);
         }

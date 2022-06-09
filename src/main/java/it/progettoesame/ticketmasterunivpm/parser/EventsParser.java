@@ -51,6 +51,8 @@ public class EventsParser {
     //Metodo che raggruppa gli eventi e li restituisce insieme al numero di eventi
     public void buildEventsArray(JSONObject o) {
         JSONObject embedded1 = (JSONObject) o.get("_embedded");
+        if (embedded1 == null)
+            return;
         JSONArray eventsArray = (JSONArray) embedded1.get("events");
         for (Object value : eventsArray) {
             JSONObject eventoTemp = (JSONObject) value;
