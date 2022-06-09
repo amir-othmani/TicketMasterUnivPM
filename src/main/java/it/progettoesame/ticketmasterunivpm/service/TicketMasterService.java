@@ -2,6 +2,7 @@ package it.progettoesame.ticketmasterunivpm.service;
 
 
 import it.progettoesame.ticketmasterunivpm.filter.EventsFilter;
+import it.progettoesame.ticketmasterunivpm.model.Event;
 import it.progettoesame.ticketmasterunivpm.parser.EventsParser;
 
 import org.json.simple.JSONObject;
@@ -17,9 +18,19 @@ import java.util.Map;
 public class TicketMasterService {
 
     final private JSONObject events = new JSONObject();
-    final private String[] supportedParam = {"country", "city", "local_date", "segment", "genre", "subgenre"};
+    final private JSONObject stats = new JSONObject();
+    final private String[] supportedEventsParam = {"country", "city", "local_date", "segment", "genre", "subgenre"};
+    final private String[] supportedStatsParam = {"country", "city"};
     final private EventsParser eventsParser = new EventsParser();
     private String currentCountry = " ";
+
+    public String[] getSupportedEventsParam() {
+        return supportedEventsParam;
+    }
+
+    public String[] getSupportedStatsParam() {
+        return supportedStatsParam;
+    }
 
     //Metodo che ricava l'url attraverso i parametri inseriti dall'utente
     public String getUrl(String c) {
@@ -30,6 +41,7 @@ public class TicketMasterService {
     //Metodo che ricava gli eventi dalla chiamata API
     public void buildEventsFromURL(String selectedCountry) {
         try {
+                events.clear();
                 InputStream input = new URL(getUrl(selectedCountry)).openStream();
                 JSONParser parser = new JSONParser();
                 JSONObject result = (JSONObject) parser.parse(new InputStreamReader(input));
@@ -40,14 +52,13 @@ public class TicketMasterService {
                     events.put("num_events_found", eventsParser.getNumEvents());
                     events.put("list_events_found", eventsParser.getNotFilteredEvents());
                 }
-                //TO-DO: forse c'è qualche modifica da fare qui (forse anche nella classe EventsParser)
         }
         catch ( Exception e ) {
             e.printStackTrace();
         }
     }
 
-    public boolean areSupportedParam(Map<String, String> param) {
+    public boolean areSupportedParam(Map<String, String> param, String[] supportedParam) {
         if (param.size()>supportedParam.length)
             return false;
         else {
@@ -60,16 +71,28 @@ public class TicketMasterService {
         }
     }
 
-    public JSONObject getEvents(Map<String, String> selectedParameters) {
-        if (!currentCountry.equals(selectedParameters.get("country"))) {
-            currentCountry = selectedParameters.get("country");
+    public JSONObject getEvents(Map<String, String> selectedParam) {
+        if (!currentCountry.equals(selectedParam.get("country"))) {
+            currentCountry = selectedParam.get("country");
             buildEventsFromURL(currentCountry);
-            selectedParameters.remove("country");
         }
-        if (!selectedParameters.isEmpty() && !eventsParser.getNotFilteredEvents().isEmpty()){
+        selectedParam.remove("country");
+        if (!selectedParam.isEmpty() && !eventsParser.getNotFilteredEvents().isEmpty()) {
             EventsFilter eventsFilter = new EventsFilter();
-            return  eventsFilter.getFilteredEvents(events, selectedParameters);
+            return  eventsFilter.getFilteredEvents(events, selectedParam);
         }
         return events;
+    }
+
+    public JSONObject getStats(Map<String, String> selectedParam) {
+        if (!currentCountry.equals(selectedParam.get("country"))) {
+            currentCountry = selectedParam.get("country");
+            buildEventsFromURL(currentCountry);
+        }
+        selectedParam.remove("country");
+        if (eventsParser.getNotFilteredEvents().isEmpty())
+            stats.put("events_not_found", "there's no statistics to get");
+        //else bla bla bla
+        return stats;
     }
 }

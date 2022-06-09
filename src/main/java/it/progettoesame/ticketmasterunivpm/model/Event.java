@@ -1,6 +1,8 @@
 package it.progettoesame.ticketmasterunivpm.model;
 
 
+import java.time.LocalDate;
+
 //Il model che contiene tutti gli attributi dell'evento
 public class Event {
 
@@ -9,12 +11,12 @@ public class Event {
     private String url;
     private String country;
     private String city;
-    private String local_date;
+    private LocalDate local_date;
     private String segment;
     private String genre;
     private String subgenre;
 
-    public Event(String name, String id, String url, String country, String city, String local_date, String segment, String genre, String subgenre) {
+    public Event(String name, String id, String url, String country, String city, LocalDate local_date, String segment, String genre, String subgenre) {
         this.name = name;
         this.id = id;
         this.url = url;
@@ -66,11 +68,11 @@ public class Event {
         this.city = city;
     }
 
-    public String getLocal_date() {
+    public LocalDate getLocal_date() {
         return local_date;
     }
 
-    public void setLocal_date(String local_date) {
+    public void setLocal_date(LocalDate local_date) {
         this.local_date = local_date;
     }
 

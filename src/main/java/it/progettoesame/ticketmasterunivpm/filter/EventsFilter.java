@@ -10,7 +10,7 @@ import java.util.Map;
 public class EventsFilter {
 
     private JSONObject filteredEvents = new JSONObject();
-    private ArrayList<Event> gatheredEvents = new ArrayList<>();
+    private ArrayList<Event> listFilterEvents = new ArrayList<>();
 
     public boolean checkFilters(Map<String, String> param, Event e) {
         if (param.containsKey("city") && !e.getCity().equals(param.get("city")))
@@ -30,10 +30,10 @@ public class EventsFilter {
         ArrayList<Event> eventsToFilter = (ArrayList<Event>) objectToFilter.get("list_events_found");
         for (Event event: eventsToFilter) {
             if (checkFilters(parameters, event))
-                gatheredEvents.add(event);
+                listFilterEvents.add(event);
         }
-        filteredEvents.put("list_events_filtered", gatheredEvents);
-        filteredEvents.put("num_events_filtered", gatheredEvents.size());
+        filteredEvents.put("list_events_filtered", listFilterEvents);
+        filteredEvents.put("num_events_filtered", listFilterEvents.size());
         return filteredEvents;
     }
 }

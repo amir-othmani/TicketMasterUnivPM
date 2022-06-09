@@ -21,15 +21,19 @@ public class TicketMasterController {
 
     //Rotta che restituisce gli eventi
     @RequestMapping("/events")
-    public ResponseEntity<Object> getNotFilteredEvents(@RequestParam Map<String, String> selectedParam) {
-        if (ticketMasterService.areSupportedParam(selectedParam)) {
-            if (selectedParam.containsKey("country")) {
-                return new ResponseEntity<>(ticketMasterService.getEvents(selectedParam), HttpStatus.OK);
-            }
+    public ResponseEntity<Object> getSelectedEvents(@RequestParam Map<String, String> eventsParam) {
+        if (ticketMasterService.areSupportedParam(eventsParam, ticketMasterService.getSupportedEventsParam())) {
+            if (eventsParam.containsKey("country"))
+                return new ResponseEntity<>(ticketMasterService.getEvents(eventsParam), HttpStatus.OK);
             else
-                return new ResponseEntity<>("Please insert a european country", HttpStatus.OK);
+                return new ResponseEntity<>("Please select a european country", HttpStatus.BAD_REQUEST);
         }
-        else    //Probabilmente è da trasformare in un'eccezione
+        else
             return new ResponseEntity<>("Not supported parameters", HttpStatus.BAD_REQUEST);
+    }
+
+    @RequestMapping("/stats")
+    public ResponseEntity<Object> getStats(@RequestParam Map<String, String> statsParam) {
+        return null;
     }
 }
