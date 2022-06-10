@@ -30,8 +30,11 @@ public class TicketMasterService {
     final private JSONObject filteredEvents = new JSONObject();
     final private JSONObject allStats = new JSONObject();
     final private JSONArray statsArray = new JSONArray();
-    final private String[] supportedEventsParam = {"country", "city", "local_date", "segment", "genre", "subgenre"};
-    final private String[] supportedStatsParam = {"country", "city"};
+    final private String[] supportedEventsParam = {"countryCode", "city", "local_date", "segment", "genre", "subgenre"};
+    final private String[] supportedStatsParam = {"countryCode", "city"};
+    final private String[] supportedCountries = {"AL", "AT", "BE", "BG", "CH", "CY", "CZ", "DE", "DK", "EE", "ES", "FO",
+            "FI", "FR", "GB", "GR", "HR", "HU", "IE", "IS", "IT", "LT", "LU", "MC", "ME", "MT", "ND", "NL", "NO", "PL",
+            "PT", "RO", "RS", "SE", "SK", "SI", "TR", "UA"};
     final private EventsParser eventsParser = new EventsParser();
     final private EventsFilter eventsFilter = new EventsFilter();
     final private EventsStats eventsStats = new EventsStats();
@@ -56,7 +59,7 @@ public class TicketMasterService {
                     events.put("list_events_found", eventsParser.getNotFilteredEvents());
                 }
         }
-        catch ( ParseException | IOException e)  {
+        catch ( ParseException | IOException e )  {
             e.printStackTrace();
         }
         catch ( EventsNotFoundException e ) {
@@ -110,23 +113,30 @@ public class TicketMasterService {
         }
     }
 
+    public boolean isSupportedCountry(String country) {
+        for (String c: supportedCountries) {
+            if (c.equals(country))
+                return true;
+        }
+        return false;
+    }
+
     public JSONObject getEvents(Map<String, String> selectedParam) {
-        if (!currentCountry.equals(selectedParam.get("country"))) {
-            currentCountry = selectedParam.get("country");
+        if (!currentCountry.equals(selectedParam.get("countryCode"))) {
+            currentCountry = selectedParam.get("countryCode");
             buildEventsFromURL(currentCountry);
         }
-        selectedParam.remove("country");
+        selectedParam.remove("countryCode");
         if (!selectedParam.isEmpty() && !eventsParser.getNotFilteredEvents().isEmpty())
             return filterEvents(selectedParam);
         return events;
     }
 
     public JSONObject getStats(Map<String, String> selectedParam) {
-        if (!currentCountry.equals(selectedParam.get("country"))) {
-            currentCountry = selectedParam.get("country");
+        if (!currentCountry.equals(selectedParam.get("countryCode"))) {
+            currentCountry = selectedParam.get("countryCode");
             buildEventsFromURL(currentCountry);
         }
-        selectedParam.remove("country");
         if (selectedParam.containsKey("city")) {
             eventsFilter.buildFilteredEvents(eventsParser.getNotFilteredEvents(), selectedParam);
             return eventsStats.statsPerWeek(eventsFilter.getListFilteredEvents(), selectedParam.get("city"));

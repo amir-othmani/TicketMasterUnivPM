@@ -1,7 +1,7 @@
 package it.progettoesame.ticketmasterunivpm.controller;
 
 
-import it.progettoesame.ticketmasterunivpm.exceptions.MissingCountryException;
+import it.progettoesame.ticketmasterunivpm.exceptions.NotSupportedCountryException;
 import it.progettoesame.ticketmasterunivpm.exceptions.NotSupportedParametersException;
 import it.progettoesame.ticketmasterunivpm.service.TicketMasterService;
 
@@ -25,15 +25,15 @@ public class TicketMasterController {
     public ResponseEntity<Object> getSelectedEvents(@RequestParam Map<String, String> eventsParam) {
         try {
             if (ticketMasterService.areSupportedParam(eventsParam, ticketMasterService.getSupportedEventsParam())) {
-                if (eventsParam.containsKey("country"))
+                if (eventsParam.containsKey("countryCode") && ticketMasterService.isSupportedCountry(eventsParam.get("countryCode")))
                     return new ResponseEntity<>(ticketMasterService.getEvents(eventsParam), HttpStatus.OK);
                 else
-                    throw new MissingCountryException();
+                    throw new NotSupportedCountryException();
             }
             else
                 throw new NotSupportedParametersException();
         }
-        catch ( NotSupportedParametersException | MissingCountryException e ) {
+        catch ( NotSupportedParametersException | NotSupportedCountryException e ) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -42,15 +42,15 @@ public class TicketMasterController {
     public ResponseEntity<Object> getStats(@RequestParam Map<String, String> statsParam) {
         try {
             if (ticketMasterService.areSupportedParam(statsParam, ticketMasterService.getSupportedStatsParam())) {
-                if (statsParam.containsKey("country"))
+                if (statsParam.containsKey("countryCode") && ticketMasterService.isSupportedCountry(statsParam.get("countryCode")))
                     return new ResponseEntity<>(ticketMasterService.getStats(statsParam), HttpStatus.OK);
                 else
-                    throw new MissingCountryException();
+                    throw new NotSupportedCountryException();
             }
             else
                 throw new NotSupportedParametersException();
         }
-        catch ( NotSupportedParametersException | MissingCountryException e ) {
+        catch ( NotSupportedParametersException | NotSupportedCountryException e ) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
