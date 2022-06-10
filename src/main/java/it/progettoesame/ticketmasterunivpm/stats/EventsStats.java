@@ -12,6 +12,37 @@ public class EventsStats {
     final private int[] counters = {0, 0, 0, 0, 0, 0, 0};
     final private String[] days = {"monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"};
 
+    private int indexOfMax(int[] arr)
+    {
+        int index=0;
+        int max = arr[0];
+        for (int i=1; i<arr.length; i++)
+            if (arr[i] > max) {
+                max = arr[i];
+                index = i;
+            }
+        return index;
+    }
+
+    private int indexOfMin(int[] arr)
+    {
+        int index=0;
+        int min = arr[0];
+        for (int i=1; i<arr.length; i++)
+            if (arr[i] < min) {
+                min = arr[i];
+                index = i;
+            }
+        return index;
+    }
+
+    private JSONObject buildJsonObj(int number, String day) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("num", number);
+        jsonObject.put("day", day);
+        return jsonObject;
+    }
+
     public JSONObject statsPerWeek(ArrayList<Event> events, Map<String, String> param) {
         JSONObject stats = new JSONObject();
         if (events.isEmpty()) {
@@ -33,36 +64,5 @@ public class EventsStats {
         int max = indexOfMax(counters);
         stats.put("max_events", buildJsonObj(counters[max], days[max]));
         return stats;
-    }
-
-    public int indexOfMax(int[] arr)
-    {
-        int index=0;
-        int max = arr[0];
-        for (int i=1; i<arr.length; i++)
-            if (arr[i] > max) {
-                max = arr[i];
-                index = i;
-            }
-        return index;
-    }
-
-    public int indexOfMin(int[] arr)
-    {
-        int index=0;
-        int min = arr[0];
-        for (int i=1; i<arr.length; i++)
-            if (arr[i] < min) {
-                min = arr[i];
-                index = i;
-            }
-        return index;
-    }
-
-    public JSONObject buildJsonObj(int number, String day) {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("num", number);
-        jsonObject.put("day", day);
-        return jsonObject;
     }
 }

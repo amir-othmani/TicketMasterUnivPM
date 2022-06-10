@@ -35,13 +35,13 @@ public class TicketMasterService {
     }
 
     //Metodo che ricava l'url attraverso i parametri inseriti dall'utente
-    public String getUrl(String c) {
+    private String getUrl(String c) {
         String urlBase = "https://app.ticketmaster.com/discovery/v2/events.json?apikey=ytOGRTWK4lKDd4B9gvj8odbPaejuGh8V";
         return urlBase + "&countryCode=" + c + "&size=200";
     }
 
     //Metodo che ricava gli eventi dalla chiamata API
-    public void buildEventsFromURL(String selectedCountry) {
+    private void buildEventsFromURL(String selectedCountry) {
         try {
                 events.clear();
                 InputStream input = new URL(getUrl(selectedCountry)).openStream();

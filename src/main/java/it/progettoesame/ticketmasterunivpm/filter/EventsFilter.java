@@ -12,11 +12,7 @@ public class EventsFilter {
     final private JSONObject filteredEvents = new JSONObject();
     final private ArrayList<Event> listFilteredEvents = new ArrayList<>();
 
-    public ArrayList<Event> getListFilteredEvents() {
-        return listFilteredEvents;
-    }
-
-    public boolean checkFilters(Map<String, String> param, Event e) {
+    private boolean checkFilters(Map<String, String> param, Event e) {
         if (param.containsKey("city") && !e.getCity().equals(param.get("city")))
             return false;
         if (param.containsKey("local_date") && !e.getLocal_date().toString().equals(param.get("local_date")))
@@ -37,6 +33,10 @@ public class EventsFilter {
             if (checkFilters(parameters, event))
                 listFilteredEvents.add(event);
         }
+    }
+
+    public ArrayList<Event> getListFilteredEvents() {
+        return listFilteredEvents;
     }
 }
 
