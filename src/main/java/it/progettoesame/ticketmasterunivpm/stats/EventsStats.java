@@ -1,6 +1,7 @@
 package it.progettoesame.ticketmasterunivpm.stats;
 
 
+import it.progettoesame.ticketmasterunivpm.exceptions.StatsException;
 import it.progettoesame.ticketmasterunivpm.model.Event;
 import org.json.simple.JSONObject;
 
@@ -45,24 +46,29 @@ public class EventsStats {
 
     public JSONObject statsPerWeek(ArrayList<Event> events, Map<String, String> param) {
         JSONObject stats = new JSONObject();
-        if (events.isEmpty()) {
-            stats.put("events_not_found", "there are no statistics to get");
+        try {
+            if (events.isEmpty()) {
+                throw new StatsException();
+            }
+            for (Event e: events) {
+                int dayValue = e.getLocal_date().getDayOfWeek().getValue();
+                counters[dayValue-1]++;
+            }
+            stats.put("country", events.get(0).getCountry());
+            if (param.containsKey("city"))
+                stats.put("city", param.get("city"));
+            stats.put("num_events_found", events.size());
+            double avr = Math.round(events.size()/7.0*100.0)/100.0;
+            stats.put("num_average_events", avr);
+            int min = indexOfMin(counters);
+            stats.put("min_events", buildJsonObj(counters[min], days[min]));
+            int max = indexOfMax(counters);
+            stats.put("max_events", buildJsonObj(counters[max], days[max]));
             return stats;
         }
-        for (Event e: events) {
-            int dayValue = e.getLocal_date().getDayOfWeek().getValue();
-            counters[dayValue-1]++;
+        catch ( StatsException e ) {
+            stats.put("events_not_found", e.getMessage());
+            return stats;
         }
-        stats.put("country", events.get(0).getCountry());
-        if (param.containsKey("city"))
-            stats.put("city", param.get("city"));
-        stats.put("num_events_found", events.size());
-        double avr = Math.round(events.size()/7.0*100.0)/100.0;
-        stats.put("num_average_events", avr);
-        int min = indexOfMin(counters);
-        stats.put("min_events", buildJsonObj(counters[min], days[min]));
-        int max = indexOfMax(counters);
-        stats.put("max_events", buildJsonObj(counters[max], days[max]));
-        return stats;
     }
 }

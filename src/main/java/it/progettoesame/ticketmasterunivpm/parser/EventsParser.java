@@ -40,7 +40,6 @@ public class EventsParser {
         return new Event(name, id, url, countryName, cityName, locDt, segmentName, genreName, subGenreName);
     }
 
-    //Metodo che raggruppa gli eventi e li restituisce insieme al numero di eventi
     public void buildEventsArray(JSONObject jsonObject) {
         notFilteredEvents.clear();
         JSONObject embedded1 = (JSONObject) jsonObject.get("_embedded");
