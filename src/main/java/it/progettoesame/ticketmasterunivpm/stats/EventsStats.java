@@ -66,7 +66,7 @@ public class EventsStats {
             int max = indexOfMax(counters);
             stats.put("max_events", buildJsonObj(counters[max], days[max]));
         }
-        catch ( StatsException e ) {
+        catch ( Exception e ) {
             stats.put("events_not_found", e.getMessage());
 
         }

@@ -73,7 +73,7 @@ public class TicketMasterService {
             filteredEvents.put("num_filtered_events", eventsFilter.getListFilteredEvents().size());
             return filteredEvents;
         }
-        catch ( FilterMismatchException e ) {
+        catch ( Exception e ) {
             filteredEvents.put("filtered_events_not_found", e.getMessage());
             return filteredEvents;
         }

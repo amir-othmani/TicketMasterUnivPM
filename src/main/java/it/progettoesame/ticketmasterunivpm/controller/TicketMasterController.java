@@ -33,7 +33,7 @@ public class TicketMasterController {
             else
                 throw new NotSupportedParametersException();
         }
-        catch ( NotSupportedParametersException | NotSupportedCountryException e ) {
+        catch ( Exception e ) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -50,7 +50,7 @@ public class TicketMasterController {
             else
                 throw new NotSupportedParametersException();
         }
-        catch ( NotSupportedParametersException | NotSupportedCountryException e ) {
+        catch ( Exception e ) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
