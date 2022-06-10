@@ -4,9 +4,11 @@ package it.progettoesame.ticketmasterunivpm.service;
 import it.progettoesame.ticketmasterunivpm.exceptions.EventsNotFoundException;
 import it.progettoesame.ticketmasterunivpm.exceptions.FilterMismatchException;
 import it.progettoesame.ticketmasterunivpm.filter.EventsFilter;
+import it.progettoesame.ticketmasterunivpm.model.Event;
 import it.progettoesame.ticketmasterunivpm.parser.EventsParser;
 
 import it.progettoesame.ticketmasterunivpm.stats.EventsStats;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -15,7 +17,10 @@ import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 
 
 @Service
@@ -23,6 +28,8 @@ public class TicketMasterService {
 
     final private JSONObject events = new JSONObject();
     final private JSONObject filteredEvents = new JSONObject();
+    final private JSONObject allStats = new JSONObject();
+    final private JSONArray statsArray = new JSONArray();
     final private String[] supportedEventsParam = {"country", "city", "local_date", "segment", "genre", "subgenre"};
     final private String[] supportedStatsParam = {"country", "city"};
     final private EventsParser eventsParser = new EventsParser();
@@ -45,7 +52,7 @@ public class TicketMasterService {
                 if (eventsParser.getNotFilteredEvents().isEmpty())
                     throw new EventsNotFoundException();
                 else {
-                    events.put("num_events_found", eventsParser.getNumEvents());
+                    events.put("num_events_found", eventsParser.getNotFilteredEvents().size());
                     events.put("list_events_found", eventsParser.getNotFilteredEvents());
                 }
         }
@@ -55,6 +62,31 @@ public class TicketMasterService {
         catch ( EventsNotFoundException e ) {
             events.put("events_not_found", e.getMessage());
         }
+    }
+
+    private JSONObject filterEvents (Map<String, String> selectedParam) {
+        try {
+            filteredEvents.clear();
+            eventsFilter.buildFilteredEvents(eventsParser.getNotFilteredEvents(), selectedParam);
+            if (eventsFilter.getListFilteredEvents().isEmpty())
+                throw new FilterMismatchException();
+            filteredEvents.put("list_filtered_events", eventsFilter.getListFilteredEvents());
+            filteredEvents.put("num_filtered_events", eventsFilter.getListFilteredEvents().size());
+            return filteredEvents;
+        }
+        catch ( FilterMismatchException e ) {
+            filteredEvents.put("filtered_events_not_found", e.getMessage());
+            return filteredEvents;
+        }
+    }
+
+    private ArrayList<String> getAllCities(ArrayList<Event> events) {
+        ArrayList<String> containerCities = new ArrayList<>();
+        for (Event e: events) {
+            if (!containerCities.contains(e.getCity()))
+                containerCities.add(e.getCity());
+        }
+        return containerCities;
     }
 
     public String[] getSupportedEventsParam() {
@@ -79,27 +111,14 @@ public class TicketMasterService {
     }
 
     public JSONObject getEvents(Map<String, String> selectedParam) {
-        try {
-            if (!currentCountry.equals(selectedParam.get("country"))) {
-                currentCountry = selectedParam.get("country");
-                buildEventsFromURL(currentCountry);
-            }
-            selectedParam.remove("country");
-            if (!selectedParam.isEmpty() && !eventsParser.getNotFilteredEvents().isEmpty()) {
-                filteredEvents.clear();
-                eventsFilter.buildFilteredEvents(eventsParser.getNotFilteredEvents(), selectedParam);
-                if (eventsFilter.getListFilteredEvents().isEmpty())
-                    throw new FilterMismatchException();
-                filteredEvents.put("list_filtered_events", eventsFilter.getListFilteredEvents());
-                filteredEvents.put("num_filtered_events", eventsFilter.getListFilteredEvents().size());
-                return filteredEvents;
-            }
-            return events;
+        if (!currentCountry.equals(selectedParam.get("country"))) {
+            currentCountry = selectedParam.get("country");
+            buildEventsFromURL(currentCountry);
         }
-        catch ( FilterMismatchException e ) {
-            filteredEvents.put("filtered_events_not_found", e.getMessage());
-            return filteredEvents;
-        }
+        selectedParam.remove("country");
+        if (!selectedParam.isEmpty() && !eventsParser.getNotFilteredEvents().isEmpty())
+            return filterEvents(selectedParam);
+        return events;
     }
 
     public JSONObject getStats(Map<String, String> selectedParam) {
@@ -107,10 +126,79 @@ public class TicketMasterService {
             currentCountry = selectedParam.get("country");
             buildEventsFromURL(currentCountry);
         }
+        selectedParam.remove("country");
         if (selectedParam.containsKey("city")) {
             eventsFilter.buildFilteredEvents(eventsParser.getNotFilteredEvents(), selectedParam);
-            return eventsStats.statsPerWeek(eventsFilter.getListFilteredEvents(), selectedParam);
+            return eventsStats.statsPerWeek(eventsFilter.getListFilteredEvents(), selectedParam.get("city"));
         }
-        return eventsStats.statsPerWeek(eventsParser.getNotFilteredEvents(), selectedParam);
+        statsArray.clear();
+        for (String city: getAllCities(eventsParser.getNotFilteredEvents())) {
+            Map<String, String> paramCity = new Map<>() {
+                @Override
+                public int size() {
+                    return 0;
+                }
+
+                @Override
+                public boolean isEmpty() {
+                    return false;
+                }
+
+                @Override
+                public boolean containsKey(Object key) {
+                    return false;
+                }
+
+                @Override
+                public boolean containsValue(Object value) {
+                    return false;
+                }
+
+                @Override
+                public String get(Object key) {
+                    return null;
+                }
+
+                @Override
+                public String put(String key, String value) {
+                    return null;
+                }
+
+                @Override
+                public String remove(Object key) {
+                    return null;
+                }
+
+                @Override
+                public void putAll(Map<? extends String, ? extends String> m) {
+
+                }
+
+                @Override
+                public void clear() {
+
+                }
+
+                @Override
+                public Set<String> keySet() {
+                    return null;
+                }
+
+                @Override
+                public Collection<String> values() {
+                    return null;
+                }
+
+                @Override
+                public Set<Entry<String, String>> entrySet() {
+                    return null;
+                }
+            };
+            paramCity.put("city", city);
+            eventsFilter.buildFilteredEvents(eventsParser.getNotFilteredEvents(), paramCity);
+            statsArray.add(eventsStats.statsPerWeek(eventsFilter.getListFilteredEvents(), city));
+        }
+        allStats.put("all_cities", statsArray);
+        return allStats;
     }
 }

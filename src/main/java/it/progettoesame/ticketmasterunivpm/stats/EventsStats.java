@@ -6,7 +6,7 @@ import it.progettoesame.ticketmasterunivpm.model.Event;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Map;
+
 
 public class EventsStats {
 
@@ -44,7 +44,7 @@ public class EventsStats {
         return jsonObject;
     }
 
-    public JSONObject statsPerWeek(ArrayList<Event> events, Map<String, String> param) {
+    public JSONObject statsPerWeek(ArrayList<Event> events, String city) {
         JSONObject stats = new JSONObject();
         try {
             if (events.isEmpty()) {
@@ -54,9 +54,7 @@ public class EventsStats {
                 int dayValue = e.getLocal_date().getDayOfWeek().getValue();
                 counters[dayValue-1]++;
             }
-            stats.put("country", events.get(0).getCountry());
-            if (param.containsKey("city"))
-                stats.put("city", param.get("city"));
+            stats.put("city", city);
             stats.put("num_events_found", events.size());
             double avr = Math.round(events.size()/7.0*100.0)/100.0;
             stats.put("num_average_events", avr);

@@ -1,7 +1,7 @@
 package it.progettoesame.ticketmasterunivpm.filter;
 
+
 import it.progettoesame.ticketmasterunivpm.model.Event;
-import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -9,7 +9,6 @@ import java.util.Map;
 
 public class EventsFilter {
 
-    final private JSONObject filteredEvents = new JSONObject();
     final private ArrayList<Event> listFilteredEvents = new ArrayList<>();
 
     private boolean checkFilters(Map<String, String> param, Event e) {
@@ -27,7 +26,6 @@ public class EventsFilter {
     }
 
     public void buildFilteredEvents(ArrayList<Event> eventsToFilter, Map<String, String> parameters) {
-        filteredEvents.clear();
         listFilteredEvents.clear();
         for (Event event: eventsToFilter) {
             if (checkFilters(parameters, event))
