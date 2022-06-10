@@ -32,71 +32,35 @@ public class Event {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getUrl() {
         return url;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
     public String getCountry() {
         return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
     }
 
     public String getCity() {
         return city;
     }
 
-    public void setCity(String city) {
-        this.city = city;
-    }
-
     public LocalDate getLocal_date() {
         return local_date;
-    }
-
-    public void setLocal_date(LocalDate local_date) {
-        this.local_date = local_date;
     }
 
     public String getSegment() {
         return segment;
     }
 
-    public void setSegment(String segment) {
-        this.segment = segment;
-    }
-
     public String getGenre() {
         return genre;
     }
 
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
-
     public String getSubgenre() {
         return subgenre;
-    }
-
-    public void setSubgenre(String subgenre) {
-        this.subgenre = subgenre;
     }
 }
