@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
+import java.util.HashMap;
 
 
 @RestController
@@ -22,7 +22,7 @@ public class TicketMasterController {
     TicketMasterService ticketMasterService;
 
     @RequestMapping("/events")
-    public ResponseEntity<Object> getSelectedEvents(@RequestParam Map<String, String> eventsParam) {
+    public ResponseEntity<Object> getSelectedEvents(@RequestParam HashMap<String, String> eventsParam) {
         try {
             if (ticketMasterService.areSupportedParam(eventsParam, ticketMasterService.getSupportedEventsParam())) {
                 if (eventsParam.containsKey("countryCode") && ticketMasterService.isSupportedCountry(eventsParam.get("countryCode")))
@@ -39,7 +39,7 @@ public class TicketMasterController {
     }
 
     @RequestMapping("/stats")
-    public ResponseEntity<Object> getStats(@RequestParam Map<String, String> statsParam) {
+    public ResponseEntity<Object> getStats(@RequestParam HashMap<String, String> statsParam) {
         try {
             if (ticketMasterService.areSupportedParam(statsParam, ticketMasterService.getSupportedStatsParam())) {
                 if (statsParam.containsKey("countryCode") && ticketMasterService.isSupportedCountry(statsParam.get("countryCode")))
