@@ -9,7 +9,9 @@ import org.json.simple.JSONObject;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-
+/**
+ * Classe che si occupa del parsing degli eventi
+ */
 public class EventsParser {
 
     final private ArrayList<Event> notFilteredEvents = new ArrayList<>();
@@ -80,7 +82,7 @@ public class EventsParser {
     /**
      * Questo metodo restituisce tutti gli eventi trovati in un singolo paese
      *
-     * @return un ArrayList&ltEvent&gt che sarebbe la lista degli eventi trovati
+     * @return un ArrayList degli eventi trovati
      *
      * @author amir-othmani
      */

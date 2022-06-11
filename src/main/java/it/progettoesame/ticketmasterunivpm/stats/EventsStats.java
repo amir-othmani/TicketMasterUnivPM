@@ -6,7 +6,11 @@ import org.json.simple.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
+/**
+ * Classe addetta alle statistiche
+ *
+ * @author amir-othmani
+ */
 public class EventsStats {
 
     final private int[] counters = {0, 0, 0, 0, 0, 0, 0};

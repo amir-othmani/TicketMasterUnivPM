@@ -18,7 +18,11 @@ import java.io.*;
 import java.net.URL;
 import java.util.*;
 
-
+/**
+ * Classe che funge da service per l'applicazione Spring Boot e implementa l'interfaccia TicketMasetrServiceInt
+ *
+ * @author amir-othmani
+ */
 @Service
 public class TicketMasterServiceImpl implements TicketMasterServiceInt {
 

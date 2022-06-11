@@ -9,7 +9,11 @@ import org.json.simple.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
+/**
+ * Classe che si occupa del filtraggio degli eventi
+ *
+ * @author amir-othmani
+ */
 public class EventsFilter {
 
     final private JSONObject filteredEvents = new JSONObject();
@@ -85,7 +89,7 @@ public class EventsFilter {
     /**
      * Questo metodo restituisce la lista deggli eventi filtrati
      *
-     * @return un ArrayList&ltEvent&gt che sarebbe la lista degli eventi filtrati
+     * @return un ArrayList degli eventi filtrati
      *
      * @author amir-othmani
      */

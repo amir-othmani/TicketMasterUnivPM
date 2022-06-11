@@ -13,7 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 
-
+/**
+ * Classe che funge da controller per l'applicazione Spring Boot
+ *
+ * @author amir-othmani
+ */
 @RestController
 public class TicketMasterController {
 
