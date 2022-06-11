@@ -2,8 +2,10 @@ package it.progettoesame.ticketmasterunivpm.parser;
 
 import it.progettoesame.ticketmasterunivpm.exceptions.EventParseExcpetion;
 import it.progettoesame.ticketmasterunivpm.model.Event;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -12,6 +14,14 @@ public class EventsParser {
 
     final private ArrayList<Event> notFilteredEvents = new ArrayList<>();
 
+    /**
+     * Questo metodo si occupa del parsing del singolo evento risultante dalla chiamata API originale
+     *
+     * @param jsonEvent il singolo evento da estrapolare
+     * @return un nuovo oggetto della classe Event contenente i dati dell'evento appena ottenuto
+     *
+     * @author amir-othmani
+     */
     private Event parseEvent(JSONObject jsonEvent) {
         try {
             String name = (String) jsonEvent.get("name");
@@ -43,6 +53,16 @@ public class EventsParser {
         }
     }
 
+    /**
+     * Questo metodo costruisce la lista di tutti gli eventi estrapolati dalla chiamata API originale e da restituire
+     * all'utente
+     *
+     * @param jsonObject il JSONObject ottenuto dalla chiamata API
+     * @throws EventParseExcpetion se accadono problemi durante il parsing degli eventi a causa dell'incompatitbilità
+     *                              con il model
+     *
+     * @author amir-othmani
+     */
     public void buildEventsArray(JSONObject jsonObject) throws EventParseExcpetion {
         notFilteredEvents.clear();
         JSONObject embedded1 = (JSONObject) jsonObject.get("_embedded");
@@ -57,6 +77,13 @@ public class EventsParser {
         }
     }
 
+    /**
+     * Questo metodo restituisce tutti gli eventi trovati in un singolo paese
+     *
+     * @return un ArrayList&ltEvent&gt che sarebbe la lista degli eventi trovati
+     *
+     * @author amir-othmani
+     */
     public ArrayList<Event> getNotFilteredEvents() {
         return notFilteredEvents;
     }

@@ -11,6 +11,11 @@ import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Classe che testa le funzionalità principali del service
+ *
+ * @author amir-othmani
+ */
 class TicketMasterServiceImplTest {
 
     final private TicketMasterServiceImpl service = new TicketMasterServiceImpl();

@@ -3,6 +3,11 @@ package it.progettoesame.ticketmasterunivpm.service;
 import org.json.simple.JSONObject;
 import java.util.HashMap;
 
+/**
+ * Interfaccia della classe di service
+ *
+ * @author amir-othmani
+ */
 public interface TicketMasterServiceInt {
 
     String[] getSupportedEventsParam();

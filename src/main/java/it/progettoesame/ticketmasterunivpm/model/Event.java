@@ -2,7 +2,11 @@ package it.progettoesame.ticketmasterunivpm.model;
 
 import java.time.LocalDate;
 
-
+/**
+ * Questa classe contiene tutti gli attributi di un singolo evento e all'occorrenza li restituisce
+ *
+ * @author amir-othmani
+ */
 public class Event {
 
     private String name;
