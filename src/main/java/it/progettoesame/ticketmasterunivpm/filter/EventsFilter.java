@@ -1,7 +1,9 @@
 package it.progettoesame.ticketmasterunivpm.filter;
 
 
+import it.progettoesame.ticketmasterunivpm.exceptions.FilterMismatchException;
 import it.progettoesame.ticketmasterunivpm.model.Event;
+import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,6 +11,7 @@ import java.util.HashMap;
 
 public class EventsFilter {
 
+    final private JSONObject filteredEvents = new JSONObject();
     final private ArrayList<Event> listFilteredEvents = new ArrayList<>();
 
     private boolean checkFilters(HashMap<String, String> param, Event e) {
@@ -30,6 +33,22 @@ public class EventsFilter {
         for (Event event: eventsToFilter) {
             if (checkFilters(parameters, event))
                 listFilteredEvents.add(event);
+        }
+    }
+
+    public JSONObject filterEvents (HashMap<String, String> selectedParam, ArrayList<Event> eventsToFilter) {
+        try {
+            filteredEvents.clear();
+            buildFilteredEvents(eventsToFilter, selectedParam);
+            if (listFilteredEvents.isEmpty())
+                throw new FilterMismatchException();
+            filteredEvents.put("list_filtered_events", listFilteredEvents);
+            filteredEvents.put("num_filtered_events", listFilteredEvents.size());
+            return filteredEvents;
+        }
+        catch ( Exception e ) {
+            filteredEvents.put("filtered_events_not_found", e.getMessage());
+            return filteredEvents;
         }
     }
 

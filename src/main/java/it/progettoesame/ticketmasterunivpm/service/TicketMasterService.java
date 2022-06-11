@@ -3,7 +3,6 @@ package it.progettoesame.ticketmasterunivpm.service;
 
 import it.progettoesame.ticketmasterunivpm.exceptions.EventParseExcpetion;
 import it.progettoesame.ticketmasterunivpm.exceptions.EventsNotFoundException;
-import it.progettoesame.ticketmasterunivpm.exceptions.FilterMismatchException;
 import it.progettoesame.ticketmasterunivpm.exceptions.StatsException;
 import it.progettoesame.ticketmasterunivpm.filter.EventsFilter;
 import it.progettoesame.ticketmasterunivpm.model.Event;
@@ -26,7 +25,6 @@ import java.util.*;
 public class TicketMasterService {
 
     final private JSONObject events = new JSONObject();
-    final private JSONObject filteredEvents = new JSONObject();
     final private JSONObject allStats = new JSONObject();
     final private JSONArray statsArray = new JSONArray();
     final private String[] supportedEventsParam = {"countryCode", "city", "local_date", "segment", "genre", "subgenre"};
@@ -60,22 +58,6 @@ public class TicketMasterService {
         }
         catch ( ParseException | IOException | EventsNotFoundException e ) {
             events.put("events_not_found", e.getMessage());
-        }
-    }
-
-    private JSONObject filterEvents (HashMap<String, String> selectedParam) {
-        try {
-            filteredEvents.clear();
-            eventsFilter.buildFilteredEvents(eventsParser.getNotFilteredEvents(), selectedParam);
-            if (eventsFilter.getListFilteredEvents().isEmpty())
-                throw new FilterMismatchException();
-            filteredEvents.put("list_filtered_events", eventsFilter.getListFilteredEvents());
-            filteredEvents.put("num_filtered_events", eventsFilter.getListFilteredEvents().size());
-            return filteredEvents;
-        }
-        catch ( Exception e ) {
-            filteredEvents.put("filtered_events_not_found", e.getMessage());
-            return filteredEvents;
         }
     }
 
@@ -129,7 +111,7 @@ public class TicketMasterService {
         }
         selectedParam.remove("countryCode");
         if (!selectedParam.isEmpty() && !eventsParser.getNotFilteredEvents().isEmpty())
-            return filterEvents(selectedParam);
+            return eventsFilter.filterEvents(selectedParam, eventsParser.getNotFilteredEvents());
         return events;
     }
 
