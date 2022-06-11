@@ -45,6 +45,11 @@ public class EventsStats {
         return jsonObject;
     }
 
+    private void countersReset(int[] arr) {
+        for (int i=0; i<arr.length; i++)
+            arr[i] = 0;
+    }
+
     public JSONObject statsPerWeek(ArrayList<Event> events, HashMap<String, String> paramCity) {
         JSONObject stats = new JSONObject();
         try {
@@ -70,6 +75,7 @@ public class EventsStats {
             stats.put("events_not_found", e.getMessage());
 
         }
+        countersReset(counters);
         return stats;
     }
 }
