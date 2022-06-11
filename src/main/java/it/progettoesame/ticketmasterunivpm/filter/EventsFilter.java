@@ -1,10 +1,8 @@
 package it.progettoesame.ticketmasterunivpm.filter;
 
-
 import it.progettoesame.ticketmasterunivpm.exceptions.FilterMismatchException;
 import it.progettoesame.ticketmasterunivpm.model.Event;
 import org.json.simple.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 

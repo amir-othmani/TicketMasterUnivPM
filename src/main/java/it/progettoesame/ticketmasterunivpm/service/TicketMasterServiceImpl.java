@@ -1,28 +1,24 @@
 package it.progettoesame.ticketmasterunivpm.service;
 
-
 import it.progettoesame.ticketmasterunivpm.exceptions.EventParseExcpetion;
 import it.progettoesame.ticketmasterunivpm.exceptions.EventsNotFoundException;
 import it.progettoesame.ticketmasterunivpm.exceptions.StatsException;
 import it.progettoesame.ticketmasterunivpm.filter.EventsFilter;
 import it.progettoesame.ticketmasterunivpm.model.Event;
 import it.progettoesame.ticketmasterunivpm.parser.EventsParser;
-
 import it.progettoesame.ticketmasterunivpm.stats.EventsStats;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
 import org.springframework.stereotype.Service;
-
 import java.io.*;
 import java.net.URL;
 import java.util.*;
 
 
 @Service
-public class TicketMasterService {
+public class TicketMasterServiceImpl implements TicketMasterServiceInt {
 
     final private JSONObject events = new JSONObject();
     final private JSONObject allStats = new JSONObject();

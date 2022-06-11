@@ -1,12 +1,9 @@
 package it.progettoesame.ticketmasterunivpm.parser;
 
-
 import it.progettoesame.ticketmasterunivpm.exceptions.EventParseExcpetion;
 import it.progettoesame.ticketmasterunivpm.model.Event;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 

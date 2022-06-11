@@ -1,9 +1,8 @@
 package it.progettoesame.ticketmasterunivpm.model;
 
-
 import java.time.LocalDate;
 
-//Il model che contiene tutti gli attributi dell'evento
+
 public class Event {
 
     private String name;
