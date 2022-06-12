@@ -29,14 +29,15 @@ public class TicketMasterServiceImpl implements TicketMasterServiceInt {
     final private JSONObject events = new JSONObject();
     final private JSONObject allStats = new JSONObject();
     final private JSONArray statsArray = new JSONArray();
+    final private EventsParser eventsParser = new EventsParser();
+    final private EventsFilter eventsFilter = new EventsFilter();
+    final private EventsStats eventsStats = new EventsStats();
     final private String[] supportedEventsParam = {"countryCode", "city", "local_date", "segment", "genre", "subgenre"};
     final private String[] supportedStatsParam = {"countryCode", "city"};
     final private String[] supportedCountries = {"AL", "AT", "BE", "BG", "CH", "CY", "CZ", "DE", "DK", "EE", "ES", "FO",
             "FI", "FR", "GB", "GR", "HR", "HU", "IE", "IS", "IT", "LT", "LU", "MC", "ME", "MT", "ND", "NL", "NO", "PL",
             "PT", "RO", "RS", "SE", "SK", "SI", "TR", "UA"};
-    final private EventsParser eventsParser = new EventsParser();
-    final private EventsFilter eventsFilter = new EventsFilter();
-    final private EventsStats eventsStats = new EventsStats();
+    private String currentCountry = " ";
 
     /**
      * Questo metodo ricava l'url con cui il programma dovrà effettuare la chiamata API.
@@ -53,6 +54,9 @@ public class TicketMasterServiceImpl implements TicketMasterServiceInt {
 
     /**
      * Questo metodo costruisce il JSONObject da restituire all'utente a partire dall'url associato alla richiesta.
+     * Se però l'utente sta effettuando una chiamata di tipo GET (in una qualsiasi rotta) sullo stesso paese della
+     * richiesta precedente, il programma non si riconnette all'API ma restituisce direttamente i risultati della
+     * chiamata già fatta in precedenza.
      *
      * @param selectedCountry il codice del paese selezionato dall'utente
      * @throws EventParseExcpetion se il JSONObject ricavato dalla chiamata API associata al paese selezionato risulta
@@ -62,18 +66,29 @@ public class TicketMasterServiceImpl implements TicketMasterServiceInt {
      * @author amir-othmani
      */
     private void buildEventsFromURL(String selectedCountry) throws EventParseExcpetion, EventsNotFoundException {
-        try {
-                events.clear();
-                InputStream input = new URL(getUrl(selectedCountry)).openStream();
-                JSONParser parser = new JSONParser();
-                JSONObject result = (JSONObject) parser.parse(new InputStreamReader(input));
-                eventsParser.buildEventsArray(result);
+        if (selectedCountry.equals(currentCountry)) {
+            if (eventsParser.isParsingSuccess()) {
                 if (eventsParser.getNotFilteredEvents().isEmpty())
                     throw new EventsNotFoundException();
-                else {
-                    events.put("num_events_found", eventsParser.getNotFilteredEvents().size());
-                    events.put("list_events_found", eventsParser.getNotFilteredEvents());
-                }
+                else
+                    return;
+            }
+            else
+                throw new EventParseExcpetion();
+        }
+        try {
+            events.clear();
+            currentCountry = selectedCountry;
+            InputStream input = new URL(getUrl(selectedCountry)).openStream();
+            JSONParser parser = new JSONParser();
+            JSONObject result = (JSONObject) parser.parse(new InputStreamReader(input));
+            eventsParser.buildEventsArray(result);
+            if (eventsParser.getNotFilteredEvents().isEmpty())
+                throw new EventsNotFoundException();
+            else {
+                events.put("num_events_found", eventsParser.getNotFilteredEvents().size());
+                events.put("list_events_found", eventsParser.getNotFilteredEvents());
+            }
         }
         catch ( ParseException | IOException e ) {
             e.printStackTrace();
@@ -126,6 +141,8 @@ public class TicketMasterServiceImpl implements TicketMasterServiceInt {
      * @param param i parametri inseriti dall'utente
      * @param supportedParam  i parametri supportati
      * @return un valore booleano
+     *
+     * @author amir-othmani
      */
     public boolean areSupportedParam(HashMap<String, String> param, String[] supportedParam) {
         if (param.size()>supportedParam.length)
@@ -139,6 +156,7 @@ public class TicketMasterServiceImpl implements TicketMasterServiceInt {
             return verify == param.size();
         }
     }
+
     /**
      * Questo metodo verifica se il paese selezionato dall'utente sia supportato dal programma.
      *
@@ -156,8 +174,8 @@ public class TicketMasterServiceImpl implements TicketMasterServiceInt {
     }
 
     /**
-     * Questo metodo restituisce gli eventi sulla base dei parametri inseriti dall'utente e richiama tutti gli altri
-     * metodi necessari.
+     * Questo metodo restituisce gli eventi (e all'occorrenza li filtra) sulla base dei parametri inseriti dall'utente e
+     * richiama tutti gli altri metodi necessari.
      *
      * @param selectedParam i parametri inseriti dall'utente
      * @return un JSONObject che conterrà la lista degli eventi (eventualmente filtrati) trovati e il loro numero
@@ -190,8 +208,6 @@ public class TicketMasterServiceImpl implements TicketMasterServiceInt {
         try {
             allStats.clear();
             buildEventsFromURL(selectedParam.get("countryCode"));
-            if (eventsParser.getNotFilteredEvents().isEmpty())
-                throw new EventsNotFoundException();
             if (selectedParam.containsKey("city")) {
                 eventsFilter.buildFilteredEvents(eventsParser.getNotFilteredEvents(), selectedParam);
                 return eventsStats.statsPerWeek(eventsFilter.getListFilteredEvents(), selectedParam);

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class EventsParser {
 
     final private ArrayList<Event> notFilteredEvents = new ArrayList<>();
+    private boolean parsingSuccess;
 
     /**
      * Questo metodo si occupa del parsing del singolo evento risultante dalla chiamata API originale
@@ -66,6 +67,7 @@ public class EventsParser {
      * @author amir-othmani
      */
     public void buildEventsArray(JSONObject jsonObject) throws EventParseExcpetion {
+        parsingSuccess = true;
         notFilteredEvents.clear();
         JSONObject embedded1 = (JSONObject) jsonObject.get("_embedded");
         if (embedded1 == null)
@@ -73,8 +75,11 @@ public class EventsParser {
         JSONArray eventsArray = (JSONArray) embedded1.get("events");
         for (Object value : eventsArray) {
             JSONObject eventoTemp = (JSONObject) value;
-            if (parseEvent((eventoTemp)) == null)
+            if (parseEvent((eventoTemp)) == null) {
+                notFilteredEvents.clear();
+                parsingSuccess = false;
                 throw new EventParseExcpetion();
+            }
             notFilteredEvents.add(parseEvent(eventoTemp));
         }
     }
@@ -88,5 +93,16 @@ public class EventsParser {
      */
     public ArrayList<Event> getNotFilteredEvents() {
         return notFilteredEvents;
+    }
+
+    /**
+     * Metodo che all'occorrenza dichiara se il parsing ha avuto successo oppure no
+     *
+     * @return un valore booleano
+     *
+     * @author amir-othmani
+     */
+    public boolean isParsingSuccess() {
+        return parsingSuccess;
     }
 }
