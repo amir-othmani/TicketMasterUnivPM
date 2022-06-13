@@ -17,9 +17,9 @@ Questo programma consiste in un'applicazione SpringBoot che si occupa di richiam
 Per poter utilizzare il programma è sufficiente clonare la repository in una cartella locale ed eseguirlo tramite un IDE che sia in grado di leggere il linguaggio Java e che supporti SpringBoot insieme alle sue dipendenze. Dopodiché, si possono utilizzare le rotte disponibili aprendo l'applicazione Postman tramite delle richieste di tipo GET all'indirizzo "localhost:8080".
 
 ### Rotta "/events"
-Questa rotta permette di ricavare gli eventi di un determinato paese europeo e lo si può scegliere dichiarandolo come parametro countryCode (**ATTENZIONE**: l'URL con la quale si effettua la richiesta è case sensitive) come nel seguente esempio:
+Questa rotta permette di ricavare gli eventi di un determinato paese europeo e lo si può scegliere dichiarandolo come parametro countryCode (**ATTENZIONE**: l'URL con la quale si effettua la richiesta è case sensitive) come nel seguente esempio.
 
-#### localhost:8080?countryCode=DE
+#### Esempio: localhost:8080?countryCode=DE
 
     {
        "num_events_found": 200,
@@ -62,14 +62,148 @@ Questa rotta permette di ricavare gli eventi di un determinato paese europeo e l
     }    
     
 I paesi selezionabili sonon riportati di seguito in questa tabella:
-|**countryCode**|**paese di riferimento**|
+
+|**countryCode**|**Paese di riferimento**|
 |-|-|
-|AL|Albania|
+|AT|Austria|
+|BE|Belgio|
+|BG|Bulgaria|
+|CH|Svizzera|
+|CY|Cipro|
+|CZ|Repubblica Ceca|
+|DE|Germania|
+|DK|Danimarca|
+|EE|Estonia|
+|ES|Spagna|
+|FI|Finlandia|
+|FO|Isole Faroe|
+|FR|Francia|
+|GB|Gran Bretagna|
+|GR|Grecia|
+|HR|Croazia|
+|HU|Ungheria|
+|IE|Irlanda|
+|IS|Islanda|
+|IT|Italia|
+|LT|Lituania|
+|LU|Lussemburgo|
+|MC|Monaco|
+|ME|Montenegro|
+|MT|Malta|
+|ND|Irlanda del Nord|
+|NL|Paesi Bassi|
+|NO|Norvegia|
+|PL|Polonia|
+|PT|Portogallo|
+|RO|Romania|
+|RS|Serbia|
+|SE|Svezia|
+|SK|Slovacchia|
+|SI|Slovenia|
+|TR|Turchia|
+|UA|Ucraina|
+
+Per sapere in quali di questi paesi avvengono degli eventi gestiti da TicketMaster, può essere utile la seguente immagine:
+![image](https://user-images.githubusercontent.com/99722713/173312709-663161a6-aef8-4af0-8a3e-cf39a05b4449.png)
 
 
 
-{"AL", "AT", "BE", "BG", "CH", "CY", "CZ", "DE", "DK", "EE", "ES", "FO",
-            "FI", "FR", "GB", "GR", "HR", "HU", "IE", "IS", "IT", "LT", "LU", "MC", "ME", "MT", "ND", "NL", "NO", "PL",
-            "PT", "RO", "RS", "SE", "SK", "SI", "TR", "UA"}
+L'utente, se lo desidera, può cercare gli eventi in base ai parametri che gli interessano, questi possono essere (tutto case senstive mi raccomando): "city", "local_date" (che sarebbe la data nel formato Anno/Mese/Giorno), "segment", "genre", "subgenre".
+NB: di questi parametri se ne può scegliere un numero arbitrario e possono essere concatenati tramite il carattere &.
 
-L'utente, se lo desidera, può cercare gli eventi in base ai parametri che gli interessano
+#### Esempio: localhost:8080/events?countryCode=BE&city=Brussels&segment=Music&genre=Rock
+    {
+        "list_filtered_events": [
+            {
+                "name": "The Dandy Warhols",
+                "id": "Z698xZG2Za1vg",
+                "url": "https://www.ticketmaster.be/event/the-dandy-warhols-tickets/41077",
+                "country": "Belgium",
+                "city": "Brussels",
+                "local_date": "2022-06-14",
+                "segment": "Music",
+                "genre": "Rock",
+                "subgenre": "Pop"
+            },
+            {
+                "name": "Nick Mason's Saucerful Of Secrets",
+                "id": "Z698xZG2ZaaOK",
+                "url": "https://www.ticketmaster.be/event/nick-masons-saucerful-of-secrets-tickets/38931",
+                "country": "Belgium",
+                "city": "Brussels",
+                "local_date": "2022-06-17",
+                "segment": "Music",
+                "genre": "Rock",
+                "subgenre": "Pop"
+            },
+            {
+                "name": "Agnes Obel",
+                "id": "Z698xZG2ZaFU_",
+                "url": "https://www.ticketmaster.be/event/agnes-obel-tickets/36249",
+                "country": "Belgium",
+                "city": "Brussels",
+                "local_date": "2022-06-27",
+                "segment": "Music",
+                "genre": "Rock",
+                "subgenre": "Pop"
+            },
+            { (ecc.)
+            },
+        ],
+        "num_filtered_events": 9
+    }        
+
+### Rotta "/stats"
+Questa rotta permette di visualizzare le statistiche riguardanti il numero di eventi che occorrono in un certo paese:
+nello specifico, una volta selezionato il paese (da inserire come parametro come nella rotta "/event"), il programma conterà il numero di eventi che intercorrono in ogni giorno della settimana e ne restituirà il numero totale, il numero medio, il giorno in cui avviene il numero massimo insieme al numero stesso e il giorno in cui avviene il numero minimo sempre insieme al numero stesso.
+Tutte queste statistiche sono calcolate città per città, quindi le restituirà in un elenco di tutte le città presenti nel paese e che sono state individuate dal programma, come nel seguente esempio.
+
+#### Esempio: localhost:8080/stats?countryCode=IE
+    {
+        "country": "Ireland",
+        "all_cities": [
+            {
+                "num_average_events": 18.43,
+                "city": "Dublin",
+                "min_events": {
+                    "num": 13,
+                    "day": "monday"
+                },
+                "max_events": {
+                    "num": 30,
+                    "day": "saturday"
+                },
+                "num_events_found": 129
+            },
+            {
+                "num_average_events": 2.29,
+                "city": "Cork",
+                "min_events": {
+                    "num": 2,
+                    "day": "monday"
+                },
+                "max_events": {
+                    "num": 3,
+                    "day": "tuesday"
+                },
+                "num_events_found": 16
+            },
+            {
+                "num_average_events": 1.29,
+                "city": "Limerick City",
+                "min_events": {
+                    "num": 0,
+                    "day": "tuesday"
+                },
+                "max_events": {
+                    "num": 3,
+                    "day": "wednesday"
+                },
+                "num_events_found": 9
+            },
+            { (ecc.)
+            }
+       ]
+    }       
+    
+  
