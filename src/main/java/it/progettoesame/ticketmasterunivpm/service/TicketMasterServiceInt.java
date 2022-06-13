@@ -1,5 +1,7 @@
 package it.progettoesame.ticketmasterunivpm.service;
 
+import it.progettoesame.ticketmasterunivpm.exceptions.NotSupportedCountryException;
+import it.progettoesame.ticketmasterunivpm.exceptions.NotSupportedParametersException;
 import org.json.simple.JSONObject;
 import java.util.HashMap;
 
@@ -14,9 +16,9 @@ public interface TicketMasterServiceInt {
 
     String[] getSupportedStatsParam();
 
-    boolean areSupportedParam(HashMap<String, String> param, String[] supportedParam);
+    void areSupportedParam(HashMap<String, String> param, String[] supportedParam) throws NotSupportedParametersException;
 
-    boolean isSupportedCountry(String country);
+    void isSupportedCountry(String country) throws NotSupportedCountryException;
 
     JSONObject getEvents(HashMap<String, String> selectedParam);
 

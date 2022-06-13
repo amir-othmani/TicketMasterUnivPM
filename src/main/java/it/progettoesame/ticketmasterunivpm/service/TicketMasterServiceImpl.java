@@ -2,6 +2,8 @@ package it.progettoesame.ticketmasterunivpm.service;
 
 import it.progettoesame.ticketmasterunivpm.exceptions.EventParseExcpetion;
 import it.progettoesame.ticketmasterunivpm.exceptions.EventsNotFoundException;
+import it.progettoesame.ticketmasterunivpm.exceptions.NotSupportedCountryException;
+import it.progettoesame.ticketmasterunivpm.exceptions.NotSupportedParametersException;
 import it.progettoesame.ticketmasterunivpm.filter.EventsFilter;
 import it.progettoesame.ticketmasterunivpm.model.Event;
 import it.progettoesame.ticketmasterunivpm.parser.EventsParser;
@@ -99,7 +101,7 @@ public class TicketMasterServiceImpl implements TicketMasterServiceInt {
      * Questo metodo ricava tutte le città che sono presenti in una certa lista di eventi.
      *
      * @param events gli eventi da cui ricavare tutte le città
-     * @return un ArrayList&ltEvent&gt che contiene appunto tutte le città trovate
+     * @return un ArrayList di eventi che contiene appunto tutte le città trovate
      *
      * @author amir-othmani
      */
@@ -138,39 +140,37 @@ public class TicketMasterServiceImpl implements TicketMasterServiceInt {
     /**
      * Questo metodo verifica se i parametri selezionati dall'utente siano supportati dal programma.
      *
+     * @throws NotSupportedParametersException se i parametri inseriti dall'utente non sono supportati dal programma
      * @param param i parametri inseriti dall'utente
      * @param supportedParam  i parametri supportati
-     * @return un valore booleano
      *
      * @author amir-othmani
      */
-    public boolean areSupportedParam(HashMap<String, String> param, String[] supportedParam) {
-        if (param.size()>supportedParam.length)
-            return false;
-        else {
-            int verify=0;
-            for (String p : supportedParam) {
-                if (param.containsKey(p))
-                    verify++;
-            }
-            return verify == param.size();
+    public void areSupportedParam(HashMap<String, String> param, String[] supportedParam) throws NotSupportedParametersException {
+        int verify=0;
+        for (String p : supportedParam) {
+            if (param.containsKey(p))
+                verify++;
         }
+        if (verify != param.size())
+        throw new NotSupportedParametersException();
     }
 
     /**
      * Questo metodo verifica se il paese selezionato dall'utente sia supportato dal programma.
      *
+     * @throws NotSupportedCountryException se il paese selezionato dall'utente non è europeo o non è un codice valido
+     *                                      di nessun paese
      * @param country il paese selezionato dall'utente
-     * @return un valore booleano
      *
      * @author amir-othmani
      */
-    public boolean isSupportedCountry(String country) {
+    public void isSupportedCountry(String country) throws NotSupportedCountryException {
         for (String c: supportedCountries) {
             if (c.equals(country))
-                return true;
+                return;
         }
-        return false;
+        throw new NotSupportedCountryException();
     }
 
     /**

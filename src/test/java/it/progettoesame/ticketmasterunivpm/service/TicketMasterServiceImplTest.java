@@ -4,6 +4,9 @@ import it.progettoesame.ticketmasterunivpm.model.Event;
 import it.progettoesame.ticketmasterunivpm.stats.EventsStats;
 
 import org.json.simple.JSONArray;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -19,12 +22,16 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class TicketMasterServiceImplTest {
 
-    final private TicketMasterServiceImpl service = new TicketMasterServiceImpl();
     final private String[] supportedEventsParam = {"countryCode", "city", "local_date", "segment", "genre", "subgenre"};
     final private String[] supportedCountries = {"AT", "BE", "BG", "CH", "CY", "CZ", "DE", "DK", "EE", "ES", "FO",
             "FI", "FR", "GB", "GR", "HR", "HU", "IE", "IS", "IT", "LT", "LU", "MC", "ME", "MT", "ND", "NL", "NO", "PL",
             "PT", "RO", "RS", "SE", "SK", "SI", "TR", "UA"};
+    private TicketMasterServiceImpl service;
 
+    @BeforeEach
+    void setUp() {
+        service = new TicketMasterServiceImpl();
+    }
 
     @Test
     void areSupportedParamTest() {
@@ -38,10 +45,7 @@ class TicketMasterServiceImplTest {
             if (param.containsKey(p))
                 verify++;
         }
-        if (verify == param.size())
-            value = true;
-        else
-            value = false;
+        value = verify == param.size();
         assertFalse(value);
     }
 
@@ -60,8 +64,9 @@ class TicketMasterServiceImplTest {
     @Test
     void getEventsTest() {
         HashMap<String, String> param = new HashMap<>();
-        param.put("countryCode", "IT");
-        assertTrue(service.getEvents(param).containsKey("events_not_found"));
+        param.put("countryCode", "FR");
+        ArrayList<Event> listEventsFound = (ArrayList<Event>) service.getEvents(param).get("list_events_found");
+        assertEquals(listEventsFound.size(), 1);    //In Francia c'è un evento solo
     }
 
     @Test

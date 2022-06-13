@@ -1,7 +1,6 @@
 package it.progettoesame.ticketmasterunivpm.controller;
 
-import it.progettoesame.ticketmasterunivpm.exceptions.NotSupportedCountryException;
-import it.progettoesame.ticketmasterunivpm.exceptions.NotSupportedParametersException;
+
 import it.progettoesame.ticketmasterunivpm.service.TicketMasterServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,14 +37,9 @@ public class TicketMasterController {
     @RequestMapping("/events")
     public ResponseEntity<Object> getSelectedEvents(@RequestParam HashMap<String, String> eventsParam) {
         try {
-            if (ticketMasterServiceImpl.areSupportedParam(eventsParam, ticketMasterServiceImpl.getSupportedEventsParam())) {
-                if (eventsParam.containsKey("countryCode") && ticketMasterServiceImpl.isSupportedCountry(eventsParam.get("countryCode")))
-                    return new ResponseEntity<>(ticketMasterServiceImpl.getEvents(eventsParam), HttpStatus.OK);
-                else
-                    throw new NotSupportedCountryException();
-            }
-            else
-                throw new NotSupportedParametersException();
+            ticketMasterServiceImpl.areSupportedParam(eventsParam, ticketMasterServiceImpl.getSupportedEventsParam());
+            ticketMasterServiceImpl.isSupportedCountry(eventsParam.get("countryCode"));
+            return new ResponseEntity<>(ticketMasterServiceImpl.getEvents(eventsParam), HttpStatus.OK);
         }
         catch ( Exception e ) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -64,14 +58,9 @@ public class TicketMasterController {
     @RequestMapping("/stats")
     public ResponseEntity<Object> getStats(@RequestParam HashMap<String, String> statsParam) {
         try {
-            if (ticketMasterServiceImpl.areSupportedParam(statsParam, ticketMasterServiceImpl.getSupportedStatsParam())) {
-                if (statsParam.containsKey("countryCode") && ticketMasterServiceImpl.isSupportedCountry(statsParam.get("countryCode")))
-                    return new ResponseEntity<>(ticketMasterServiceImpl.getStats(statsParam), HttpStatus.OK);
-                else
-                    throw new NotSupportedCountryException();
-            }
-            else
-                throw new NotSupportedParametersException();
+            ticketMasterServiceImpl.areSupportedParam(statsParam, ticketMasterServiceImpl.getSupportedStatsParam());
+            ticketMasterServiceImpl.isSupportedCountry(statsParam.get("countryCode"));
+            return new ResponseEntity<>(ticketMasterServiceImpl.getStats(statsParam), HttpStatus.OK);
         }
         catch ( Exception e ) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
