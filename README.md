@@ -206,4 +206,4 @@ Tutte queste statistiche sono calcolate città per città, quindi le restituirà
        ]
     }       
     
-  
+È possibile selezionare la città inserendolo come parametro aggiuntivo come nel seguente esempio 
