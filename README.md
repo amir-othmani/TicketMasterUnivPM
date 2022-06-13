@@ -228,7 +228,6 @@ Tutte queste statistiche sono calcolate città per città, quindi le restituirà
 
 Ovviamente, che si parli della rotta degli eventi o quella delle statistiche, non tutti i parametri possono restituire il risultato desiderato.
 Riporto di seguito 5 tipi di eccezione che possono accadere nel momento in cui si fa la chiamata GET.
-<sub> (attenzione: reato di quando) </sub>
 
 ### Quando il paese selezionato non è europeo
 
