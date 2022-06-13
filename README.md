@@ -109,7 +109,9 @@ Per sapere in quali di questi paesi avvengono degli eventi gestiti da TicketMast
 
 
 L'utente, se lo desidera, può cercare gli eventi in base ai parametri che gli interessano, questi possono essere (tutto case senstive mi raccomando): "city", "local_date" (che sarebbe la data nel formato Anno/Mese/Giorno), "segment", "genre", "subgenre".
-NB: di questi parametri se ne può scegliere un numero arbitrario e possono essere concatenati tramite il carattere &.
+NB: di questi parametri se ne può scegliere un numero arbitrario e possono essere concatenati tramite il carattere "&".
+
+I valori che si possono inserire nel parametro Segment sono: Miscellaneous, Sports, Music, Arts & Theatre, Film, Venue Based, Upsell (non riporto anche i generi e i sottogeneri perché ce ne sono troppi).
 
 #### Esempio: localhost:8080/events?countryCode=BE&city=Brussels&segment=Music&genre=Rock
     {
@@ -287,7 +289,7 @@ Gli strumenti utilizzati per realizzare il programma sono riportati di seguito:
  * Intellij (IDE)
  * SpringBoot (Framework)
  * Maven (Dipendenze necessarie al funzionamento del programma)
- * Postman (testare l'API)
+ * Postman (per testare le chiamate API)
 
 
 Autore
