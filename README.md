@@ -289,5 +289,7 @@ Gli strumenti utilizzati per realizzare il programma sono riportati di seguito:
  * SpringBoot (Framework)
  * Maven (Dipendenze necessarie al funzionamento del programma)
  * Postman (testare l'API)
+
+
 Autore
  * Othmani Amir
