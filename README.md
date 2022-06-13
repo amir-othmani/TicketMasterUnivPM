@@ -6,11 +6,11 @@ Questo programma consiste in un'applicazione SpringBoot che si occupa di richiam
   * /events
   * /stats
 * Eccezioni che il programma può restituire
-  * quando il paese selezionato non è europeo
-  * quando il paese selezionato non contiene eventi
-  * quando il paese selezionato è incompatibile con il modello del programma
-  * quando l'utente seleziona dei parametri non validi
-  * quando non ci sono eventi che corripsondono ai parametri selezionati
+  * Quando il paese selezionato non è europeo
+  * Quando il paese selezionato non contiene eventi
+  * Quando il paese selezionato è incompatibile con il modello del programma
+  * Quando l'utente seleziona dei parametri non validi
+  * Quando non ci sono eventi che corripsondono ai parametri selezionati
 * Credits
 
 ## Rotte disponibili
@@ -206,4 +206,79 @@ Tutte queste statistiche sono calcolate città per città, quindi le restituirà
        ]
     }       
     
-È possibile selezionare la città inserendolo come parametro aggiuntivo come nel seguente esempio 
+È possibile selezionare la città inserendolo come parametro aggiuntivo ricavando così le statistiche di una singola città del paese selezionato.
+
+#### Esempio: localhost:8080/stats?countryCode=SE&city=Stockholm
+    {
+        "country": "Sweden",
+        "num_average_events": 10.86,
+        "city": "Stockholm",
+        "min_events": {
+            "num": 2,
+            "day": "monday"
+        },
+        "max_events": {
+            "num": 19,
+            "day": "saturday"
+        },
+        "num_events_found": 76
+    }
+
+## Eccezioni che il programma può restituire
+
+Ovviamente, che si parli della rotta degli eventi o quella delle statistiche, non tutti i parametri possono restituire il risultato desiderato.
+Riporto di seguito 5 tipi di eccezione che possono accadere nel momento in cui si fa la chiamata GET.
+<sub> (attenzione: reato di quando) </sub>
+
+### Quando il paese selezionato non è europeo
+
+In realtà questo caso si estende a tutti i casi in cui il codice inserito come parametro non è di nessun paese o si lascia vuoto lo spazio in cui inserire il valore del parametro.
+
+#### Esempi: localhost:8080/events?countryCode=US, localhost:8080/stats?countryCode=nbieuifiu, localhost:8080/events
+
+Tutti e tre restituiranno il seguente messaggio come stringa (notare che su Postman lo status risulterà essere "400 Bad Request"):
+            
+    Please insert a european (and valid) country-code
+    
+### Quando il paese selezionato non contiene eventi
+
+Come si può vedere dall'immagine, non tutti i paesi contengono eventi gestiti da TicketMaster. In tutti questi casi verrà restituito un JSON strutturato come segue.
+
+#### Esempio: localhost:8080/stats?countryCode=IT
+
+(notare che su Postman lo status risulterà essere "200 OK" in quanto si tratta di un errore interno al programma e non di inserimento da parte dell'utente)
+
+    {
+        "events_not_found": "we're sorry, but there are no available events in this country"
+    }
+    
+### Quando il paese selezionato è incompatibile con il modello del programma
+
+Nella rotta "/events" è visibile il modello con cui è stato strutturato ogni evento (quindi name, id, url, local_date, segment, genre, subgenre).
+In alcuni paesi però, gli eventi non contengono tutte le informazioni, pertanto il programma non è in grado di elaborarli correttamente.
+Verrà dunque restituito un JSON come nell'esempio di seguito.
+
+#### Esempio: localhost:8080/events?countryCode=CH
+
+    {
+          "events_not_found": "We're sorry, but we could not get the events in this country"
+    }
+    
+### Quando l'utente seleziona dei parametri non validi
+
+Se l'utente inserisce dei parametri non supportati dal programma, quest'ultimo restituirà il seguente messaggio d'errore in formato stringa.
+
+#### Esempio: localhost:8080/stats?countryCode=FR&invalidKey=invalidValue
+
+    Not supported parameters
+    
+### Quando non ci sono eventi che corripsondono ai parametri selezionati
+
+Se il programma non è in grado di trovare nessun evento che corrisponda ai parametri selezionati dall'utente. Verrà restituito un JSON come di seguito.
+
+#### Esempio: localhost:8080/events?countryCode=DE&city=Hannover&segment=Sports&genre=Golf
+
+    {
+          "filtered_events_not_found": "there are no events that match the seleceted filters"
+    }
+    
