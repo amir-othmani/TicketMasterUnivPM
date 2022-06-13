@@ -2,6 +2,7 @@ package it.progettoesame.ticketmasterunivpm.service;
 
 import it.progettoesame.ticketmasterunivpm.model.Event;
 import it.progettoesame.ticketmasterunivpm.stats.EventsStats;
+
 import org.json.simple.JSONArray;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +21,7 @@ class TicketMasterServiceImplTest {
 
     final private TicketMasterServiceImpl service = new TicketMasterServiceImpl();
     final private String[] supportedEventsParam = {"countryCode", "city", "local_date", "segment", "genre", "subgenre"};
-    final private String[] supportedCountries = {"AL", "AT", "BE", "BG", "CH", "CY", "CZ", "DE", "DK", "EE", "ES", "FO",
+    final private String[] supportedCountries = {"AN", "AT", "BE", "BG", "CH", "CY", "CZ", "DE", "DK", "EE", "ES", "FO",
             "FI", "FR", "GB", "GR", "HR", "HU", "IE", "IS", "IT", "LT", "LU", "MC", "ME", "MT", "ND", "NL", "NO", "PL",
             "PT", "RO", "RS", "SE", "SK", "SI", "TR", "UA"};
 

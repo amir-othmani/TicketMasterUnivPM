@@ -34,7 +34,7 @@ public class TicketMasterServiceImpl implements TicketMasterServiceInt {
     final private EventsStats eventsStats = new EventsStats();
     final private String[] supportedEventsParam = {"countryCode", "city", "local_date", "segment", "genre", "subgenre"};
     final private String[] supportedStatsParam = {"countryCode", "city"};
-    final private String[] supportedCountries = {"AL", "AT", "BE", "BG", "CH", "CY", "CZ", "DE", "DK", "EE", "ES", "FO",
+    final private String[] supportedCountries = {"AN", "AT", "BE", "BG", "CH", "CY", "CZ", "DE", "DK", "EE", "ES", "FO",
             "FI", "FR", "GB", "GR", "HR", "HU", "IE", "IS", "IT", "LT", "LU", "MC", "ME", "MT", "ND", "NL", "NO", "PL",
             "PT", "RO", "RS", "SE", "SK", "SI", "TR", "UA"};
     private String currentCountry = " ";
