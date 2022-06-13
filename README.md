@@ -61,7 +61,7 @@ Questa rotta permette di ricavare gli eventi di un determinato paese europeo e l
              },
     }    
     
-I paesi selezionabili sonon riportati di seguito in questa tabella:
+I paesi selezionabili sono riportati di seguito in questa tabella:
 
 |**countryCode**|**Paese di riferimento**|
 |-|-|
@@ -282,3 +282,12 @@ Se il programma non è in grado di trovare nessun evento che corrisponda ai para
           "filtered_events_not_found": "there are no events that match the seleceted filters"
     }
     
+## Credits
+
+Gli strumenti utilizzati per realizzare il programma sono riportati di seguito:
+ * Intellij (IDE)
+ * SpringBoot (Framework)
+ * Maven (Dipendenze necessarie al funzionamento del programma)
+ * Postman (testare l'API)
+Autore
+ * Othmani Amir
